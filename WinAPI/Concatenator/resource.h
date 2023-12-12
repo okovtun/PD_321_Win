@@ -4,12 +4,10 @@
 //
 #define IDD_DIALOG_MAIN                 101
 #define IDI_ICON_NOTEPAD                103
-
 #define IDC_STATIC_FULLNAME             1001
 #define IDC_EDIT_FULLNAME               1002
-#define IDC_EDIT_CHAR                   1003
+#define IDC_EDIT_DESCRIPTION            1003
 #define IDC_STATIC_CHAR                 1004
-
 #define IDC_CHECK_ATTENTION             1005
 #define IDC_CHECK_GOOD_UNDERSTANDING    1006
 #define IDC_CHECK_GOOD_CODING           1007
