@@ -2,6 +2,9 @@
 https://www.youtube.com/playlist?list=PLeqyOOqxeiIPKFZv5zcgZrowcucM8n-wi
 
 TODO:
+Добить Tracking Tooltip.
+
+DONE:
 1. Окно всегда должно открываться по середине экрана, и занимать 75% экрана, независимо от размера экрана;	DONE
 	https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsystemmetrics
 2. При перемещении и изменении размера окна в строке заголовка должен отображаться размер окна, и его положение на экране;
