@@ -2,6 +2,10 @@
 https://www.youtube.com/playlist?list=PLeqyOOqxeiIPKFZv5zcgZrowcucM8n-wi
 
 TODO:
+1. TrackingTooltip должен отображаться только если установлена галочка "Показать координаты мыши";
+2. *Отобразить координаты мыши в строке состояния;
+
+DONE:
 Добить Tracking Tooltip.
 
 DONE:
