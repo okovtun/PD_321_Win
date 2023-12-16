@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Concatenator", "Concatenato
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MainWindow", "MainWindow\MainWindow.vcxproj", "{C00BA647-1790-45DF-8042-11F4D2B50158}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calc", "Calc\Calc.vcxproj", "{7097FA66-3728-49F7-94EC-295946634FDE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{C00BA647-1790-45DF-8042-11F4D2B50158}.Release|x64.Build.0 = Release|x64
 		{C00BA647-1790-45DF-8042-11F4D2B50158}.Release|x86.ActiveCfg = Release|Win32
 		{C00BA647-1790-45DF-8042-11F4D2B50158}.Release|x86.Build.0 = Release|Win32
+		{7097FA66-3728-49F7-94EC-295946634FDE}.Debug|x64.ActiveCfg = Debug|x64
+		{7097FA66-3728-49F7-94EC-295946634FDE}.Debug|x64.Build.0 = Debug|x64
+		{7097FA66-3728-49F7-94EC-295946634FDE}.Debug|x86.ActiveCfg = Debug|Win32
+		{7097FA66-3728-49F7-94EC-295946634FDE}.Debug|x86.Build.0 = Debug|Win32
+		{7097FA66-3728-49F7-94EC-295946634FDE}.Release|x64.ActiveCfg = Release|x64
+		{7097FA66-3728-49F7-94EC-295946634FDE}.Release|x64.Build.0 = Release|x64
+		{7097FA66-3728-49F7-94EC-295946634FDE}.Release|x86.ActiveCfg = Release|Win32
+		{7097FA66-3728-49F7-94EC-295946634FDE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
