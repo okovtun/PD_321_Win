@@ -82,6 +82,14 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	CONST INT i_DISPLAY_BUFFER_SIZE = 256;
 	static CHAR sz_display[i_DISPLAY_BUFFER_SIZE]{};
+
+	static DOUBLE	a = 0;	//operands
+	static DOUBLE	b = 0;	//operands
+	static INT		operation;
+	static BOOL		input = FALSE;
+	static BOOL		operation_input = FALSE;
+	static BOOL		in_default_state = TRUE;
+
 	switch (uMsg)
 	{
 	case WM_CREATE:
@@ -97,6 +105,7 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			GetModuleHandle(NULL),
 			NULL
 		);
+		//		Digits:
 		for (int i = 6; i >= 0; i -= 3)
 		{
 			for (int j = 0; j < 3; j++)
@@ -154,7 +163,7 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				g_i_BUTTON_START_Y + (g_i_BUTTON_SIZE + g_i_INTERVAL)*i,
 				g_i_BUTTON_SIZE, g_i_BUTTON_SIZE,
 				hwnd,
-				(HMENU)(IDC_BUTTON_PLUS + i),
+				(HMENU)(IDC_BUTTON_SLASH - i),
 				GetModuleHandle(NULL),
 				NULL
 			);
@@ -183,7 +192,7 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			g_i_BUTTON_START_Y + g_i_BUTTON_SIZE + g_i_INTERVAL,
 			g_i_BUTTON_SIZE, g_i_BUTTON_SIZE,
 			hwnd,
-			(HMENU)IDC_BUTTON_BSP,
+			(HMENU)IDC_BUTTON_CLEAR,
 			GetModuleHandle(NULL),
 			NULL
 		);
@@ -197,7 +206,7 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			g_i_BUTTON_START_Y + (g_i_BUTTON_SIZE + g_i_INTERVAL) * 2,
 			g_i_BUTTON_SIZE, g_i_BUTTON_DOUBLE_SIZE,
 			hwnd,
-			(HMENU)IDC_BUTTON_BSP,
+			(HMENU)IDC_BUTTON_EQUAL,
 			GetModuleHandle(NULL),
 			NULL
 		);
@@ -215,10 +224,56 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		HWND hEdit = GetDlgItem(hwnd, IDC_EDIT);
 		SendMessage(hEdit, WM_GETTEXT, i_DISPLAY_BUFFER_SIZE, (LPARAM)sz_display);
 		CHAR sz_symbol[2]{};
-		if (LOWORD(wParam) >= IDC_BUTTON_0 && LOWORD(wParam) <= IDC_BUTTON_9)
+		if (LOWORD(wParam) >= IDC_BUTTON_0 && LOWORD(wParam) <= IDC_BUTTON_POINT)
 		{
+			if (input == FALSE)SendMessage(hEdit, WM_SETTEXT, 0, (LPARAM)"");
 			sz_symbol[0] = LOWORD(wParam) - IDC_BUTTON_0 + 48;
+			if (LOWORD(wParam) == IDC_BUTTON_POINT)
+			{
+				if (strchr(sz_display, '.'))break;
+				sz_symbol[0] = '.';
+			}
 			strcat(sz_display, sz_symbol);
+			SendMessage(hEdit, WM_SETTEXT, 0, (LPARAM)sz_display);
+			input = TRUE;
+		}
+		if (LOWORD(wParam) >= IDC_BUTTON_PLUS && LOWORD(wParam) <= IDC_BUTTON_SLASH)
+		{
+			SendMessage(hEdit, WM_GETTEXT, i_DISPLAY_BUFFER_SIZE, (LPARAM)sz_display);
+			if (input)b = atof(sz_display);
+
+			if (in_default_state)a = b;
+			in_default_state = FALSE;
+			
+			if (input && operation_input)SendMessage(hwnd, WM_COMMAND, LOWORD(IDC_BUTTON_EQUAL), 0);
+			input = FALSE;
+			operation = LOWORD(wParam);
+			operation_input = TRUE;
+		}
+		if (LOWORD(wParam) == IDC_BUTTON_EQUAL)
+		{
+			SendMessage(hEdit, WM_GETTEXT, i_DISPLAY_BUFFER_SIZE, (LPARAM)sz_display);
+			if (input)b = atof(sz_display);
+			input = FALSE;
+			switch (operation)
+			{
+			case IDC_BUTTON_PLUS:	a += b;	break;
+			case IDC_BUTTON_MINUS:	a -= b; break;
+			case IDC_BUTTON_ASTER:	a *= b;	break;
+			case IDC_BUTTON_SLASH:	a /= b;	break;
+			}
+			operation_input = FALSE;
+			sprintf(sz_display, "%g", a);
+			SendMessage(hEdit, WM_SETTEXT, 0, (LPARAM)sz_display);
+		}
+		if (LOWORD(wParam) == IDC_BUTTON_CLEAR)
+		{
+			a = b = 0;
+			operation = 0;
+			input = FALSE;
+			operation_input = FALSE;
+			in_default_state = TRUE;
+			sz_display[0] = 0;
 			SendMessage(hEdit, WM_SETTEXT, 0, (LPARAM)sz_display);
 		}
 	}
