@@ -19,6 +19,7 @@ CONST INT g_i_WINDOW_HEIGHT = g_i_DISPLAY_HEIGHT + g_i_START_Y * 2 + (g_i_BUTTON
 CONST CHAR* g_sz_arr_OPERATIONS[] = { "+", "-", "*", "/" };
 
 INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+VOID SetSkin(HWND hwnd, CONST CHAR skin[]);
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, INT nCmdShow)
 {
@@ -211,6 +212,8 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			NULL
 		);
 
+		SetSkin(hwnd, "square_blue");
+
 		RECT window_rect, client_rect;
 		GetWindowRect(hwnd, &window_rect);
 		GetClientRect(hwnd, &client_rect);
@@ -283,4 +286,22 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	default:		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 	return FALSE;
+}
+
+VOID SetSkin(HWND hwnd, CONST CHAR skin[])
+{
+	CHAR filename[FILENAME_MAX]{};
+	for (int i = 0; i < 10; i++)
+	{
+		sprintf(filename, "ButtonsBMP\\%s\\button_%i.bmp", skin, i);
+		HWND hButton = GetDlgItem(hwnd, IDC_BUTTON_0 + i);
+		HBITMAP hBitmap = (HBITMAP)LoadImage
+		(
+			GetModuleHandle(NULL), 
+			filename, IMAGE_BITMAP, 
+			i==0?g_i_BUTTON_DOUBLE_SIZE:g_i_BUTTON_SIZE, g_i_BUTTON_SIZE, 
+			LR_LOADFROMFILE
+		);
+		SendMessage(hButton, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
+	}
 }
