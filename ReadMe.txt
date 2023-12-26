@@ -5,8 +5,11 @@ TODO:
 1. В каждую кнопку загрузить картинку;		DONE
 2. Увеличить размер шрифта в EditControl;	DONE
 3. Создать темы для калькулятора, которые будут выбираться по контекстному меню;	DONE
+	https://stackoverflow.com/questions/65286191/how-to-identify-appendmenu-mf-popup-menu-in-the-windowprocedure	Alex
 4. Нажатие на кнопки калькулятора должно происходить не только мышкой, но и с клавиатуры;	DONE
-5. Добавить круглые темы;
+5. Добавить круглые темы;	
+	https://stackoverflow.com/questions/1722750/how-to-create-a-round-circular-button-in-win32-api-using-visual-c	Artem
+	https://stackoverflow.com/questions/20815233/owner-drawn-button-wm-ctlcolorbtn-and-wm-drawitem-clearing-an-hdc Alex
 6. Вынести пункты меню с темами в подменю "Skin";	DONE
 
 DONE:

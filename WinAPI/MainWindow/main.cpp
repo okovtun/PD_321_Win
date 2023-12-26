@@ -111,6 +111,21 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			GetModuleHandle(NULL),
 			NULL
 		);
+
+		//			Round button:
+		HWND hRoundButton = CreateWindowEx
+		(
+			NULL, "Button", "Round button",
+			WS_CHILDWINDOW | WS_VISIBLE | BS_OWNERDRAW,
+			100, 100, 100, 100,
+			hwnd,
+			(HMENU)IDC_ROUND_BUTTON,
+			GetModuleHandle(NULL),
+			NULL
+		);
+
+
+		//			Status bar
 		INT parts[2] = { 64, -1 };
 		HWND hStatus = CreateWindowEx
 		(
