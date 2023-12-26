@@ -10,7 +10,7 @@ CONST INT g_i_INTERVAL = 1;
 CONST INT g_i_BUTTON_SIZE = 88;
 CONST INT g_i_BUTTON_DOUBLE_SIZE = g_i_BUTTON_SIZE * 2 + g_i_INTERVAL;
 CONST INT g_i_DISPLAY_WIDTH = (g_i_BUTTON_SIZE + g_i_INTERVAL) * 5 - g_i_INTERVAL;
-CONST INT g_i_DISPLAY_HEIGHT = 32;
+CONST INT g_i_DISPLAY_HEIGHT = g_i_BUTTON_SIZE/2;
 CONST INT g_i_BUTTON_START_X = g_i_START_X;
 CONST INT g_i_BUTTON_START_Y = g_i_START_Y + g_i_DISPLAY_HEIGHT + g_i_INTERVAL;
 CONST INT g_i_WINDOW_WIDTH = g_i_DISPLAY_WIDTH + g_i_START_X * 2 + 16;
@@ -109,6 +109,21 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			GetModuleHandle(NULL),
 			NULL
 		);
+		HFONT hFont = CreateFont
+		(
+			g_i_DISPLAY_HEIGHT - 2, g_i_DISPLAY_HEIGHT / 3,
+			0,	//Escapement
+			0,	//Orientation
+			FW_BOLD,	//Weight
+			FALSE, FALSE, FALSE, //Italic, Underline, Strikeout
+			DEFAULT_CHARSET,
+			OUT_TT_PRECIS,
+			CLIP_DEFAULT_PRECIS,
+			ANTIALIASED_QUALITY,
+			FF_DONTCARE,
+			"Tahoma"
+		);
+		SendMessage(hEdit, WM_SETFONT, (WPARAM)hFont, TRUE);
 		//		Digits:
 		for (int i = 6; i >= 0; i -= 3)
 		{
@@ -250,7 +265,7 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 			if (in_default_state)a = b;
 			in_default_state = FALSE;
-			
+
 			if (input && operation_input)SendMessage(hwnd, WM_COMMAND, LOWORD(IDC_BUTTON_EQUAL), 0);
 			input = FALSE;
 			operation = LOWORD(wParam);
@@ -284,23 +299,48 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 	}
 	break;
+	case WM_KEYDOWN:
+	{
+		if (GetKeyState(VK_SHIFT) < 0 && wParam == 0x38)SendMessage(hwnd, WM_COMMAND, IDC_BUTTON_ASTER, 0);
+		else if (wParam >= 0x30 && wParam <= 0x39)
+			SendMessage(hwnd, WM_COMMAND, LOWORD(wParam - 0x30 + 1000), 0);
+		if (wParam >= 0x60 && wParam <= 0x69)
+			SendMessage(hwnd, WM_COMMAND, LOWORD(wParam - 0x60 + 1000), 0);
+		switch (wParam)
+		{
+		case VK_ADD:
+		case VK_OEM_PLUS:	SendMessage(hwnd, WM_COMMAND, LOWORD(IDC_BUTTON_PLUS), 0);	break;
+		case VK_OEM_MINUS:
+		case VK_SUBTRACT:	SendMessage(hwnd, WM_COMMAND, LOWORD(IDC_BUTTON_MINUS), 0); break;
+		case VK_MULTIPLY:	SendMessage(hwnd, WM_COMMAND, LOWORD(IDC_BUTTON_ASTER), 0); break;
+		case VK_OEM_2:
+		case VK_DIVIDE:		SendMessage(hwnd, WM_COMMAND, LOWORD(IDC_BUTTON_SLASH), 0); break;
+		case VK_OEM_PERIOD:	SendMessage(hwnd, WM_COMMAND, LOWORD(IDC_BUTTON_POINT), 0); break;
+		case VK_RETURN:		SendMessage(hwnd, WM_COMMAND, LOWORD(IDC_BUTTON_EQUAL), 0); break;
+		case VK_ESCAPE:		SendMessage(hwnd, WM_COMMAND, LOWORD(IDC_BUTTON_CLEAR), 0); break;
+		case VK_BACK:		SendMessage(hwnd, WM_COMMAND, LOWORD(IDC_BUTTON_BSP), 0); break;
+		}
+	}
+	break;
 	case WM_CONTEXTMENU:
 	{
-		HMENU hMenu = CreatePopupMenu();
-		InsertMenu(hMenu, 0, MF_BYPOSITION | MF_STRING, CM_EXIT, "Exit");
-		InsertMenu(hMenu, 0, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
-		InsertMenu(hMenu, 0, MF_BYPOSITION | MF_STRING, CM_SQUARE_GREEN, "Square green");
-		InsertMenu(hMenu, 0, MF_BYPOSITION | MF_STRING, CM_SQUARE_BLUE, "Square blue");
+		HMENU hMainMenu = CreatePopupMenu();
+		HMENU hSubMenu = CreatePopupMenu();
+		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_STRING, CM_EXIT, "Exit");
+		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
+		InsertMenu(hMainMenu, 0, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hSubMenu, "Skins");
+		InsertMenu(hSubMenu, 0, MF_BYPOSITION | MF_STRING, CM_SQUARE_GREEN, "Square green");
+		InsertMenu(hSubMenu, 0, MF_BYPOSITION | MF_STRING, CM_SQUARE_BLUE, "Square blue");
 
-		switch (TrackPopupMenuEx(hMenu, TPM_BOTTOMALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, LOWORD(lParam), HIWORD(lParam), hwnd, NULL))
+		switch (TrackPopupMenuEx(hMainMenu, TPM_BOTTOMALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, LOWORD(lParam), HIWORD(lParam), hwnd, NULL))
 		{
 		case CM_SQUARE_BLUE:	strcpy(sz_skin, "square_blue");	break;
-		case CM_SQUARE_GREEN:	strcpy(sz_skin, "square_green");break;
+		case CM_SQUARE_GREEN:	strcpy(sz_skin, "square_green"); break;
 		case CM_EXIT:	DestroyWindow(hwnd);
 		}
 		SetSkin(hwnd, sz_skin);
 	}
-		break;
+	break;
 	case WM_DESTROY:PostQuitMessage(0); break;
 	case WM_CLOSE:	DestroyWindow(hwnd); break;
 	default:		return DefWindowProc(hwnd, uMsg, wParam, lParam);
@@ -317,9 +357,9 @@ VOID SetSkin(HWND hwnd, CONST CHAR skin[])
 		HWND hButton = GetDlgItem(hwnd, IDC_BUTTON_0 + i);
 		HBITMAP hBitmap = (HBITMAP)LoadImage
 		(
-			GetModuleHandle(NULL), 
-			filename, IMAGE_BITMAP, 
-			i==0?g_i_BUTTON_DOUBLE_SIZE:g_i_BUTTON_SIZE, g_i_BUTTON_SIZE, 
+			GetModuleHandle(NULL),
+			filename, IMAGE_BITMAP,
+			i == 0 ? g_i_BUTTON_DOUBLE_SIZE : g_i_BUTTON_SIZE, g_i_BUTTON_SIZE,
 			LR_LOADFROMFILE
 		);
 		SendMessage(hButton, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
