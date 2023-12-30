@@ -2,6 +2,9 @@
 https://www.youtube.com/playlist?list=PLeqyOOqxeiIPKFZv5zcgZrowcucM8n-wi
 
 TODO:
+Реализовать пункты меню "File->Save" и "File->Save as";
+
+DONE:
 1. В каждую кнопку загрузить картинку;		DONE
 2. Увеличить размер шрифта в EditControl;	DONE
 3. Создать темы для калькулятора, которые будут выбираться по контекстному меню;	DONE
