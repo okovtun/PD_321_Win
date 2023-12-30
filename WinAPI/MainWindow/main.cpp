@@ -140,8 +140,26 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			NULL
 		);
 		SendMessage(hStatus, SB_SETPARTS, 2, (LPARAM)parts);
+		break;
 	}
-		return TRUE;
+	return TRUE;
+	case WM_DRAWITEM:
+	{
+		HWND hRoundButton = GetDlgItem(hwnd, wParam);
+		HBITMAP hBitmap = (HBITMAP)LoadImage(GetModuleHandle(NULL), "button_1.bmp", IMAGE_BITMAP, 100, 100, LR_LOADFROMFILE);
+		//SendMessage(hRoundButton, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
+		DRAWITEMSTRUCT* distr = (DRAWITEMSTRUCT*)lParam;
+		HDC hDCbmp = CreateCompatibleDC(distr->hDC);
+		SelectObject(hDCbmp, hBitmap);
+		HRGN hRgn = CreateEllipticRgn(0, 0, 100, 100);
+		SetWindowRgn(hRoundButton, hRgn, TRUE);
+		BitBlt(distr->hDC, 0, 0, 100, 100, hDCbmp, 0, 0, SRCCOPY);
+		DeleteObject(hRgn);
+		DeleteDC(hDCbmp);
+		DeleteObject(hBitmap);
+	}
+	return TRUE;
+	
 	case WM_MOUSELEAVE:
 		SendMessage(g_hwndTrackingTT, TTM_TRACKACTIVATE, (WPARAM)FALSE, (LPARAM)&g_toolItem);
 		g_trackingMouse = FALSE;
@@ -158,7 +176,7 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 			TrackMouseEvent(&tme);
 
-			if(bShowCoords)
+			if (bShowCoords)
 				SendMessage(g_hwndTrackingTT, TTM_TRACKACTIVATE, (WPARAM)TRUE, (LPARAM)&g_toolItem);
 			g_trackingMouse = TRUE;
 		}
@@ -206,15 +224,65 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (LOWORD(wParam))
 		{
+		case IDC_ROUND_BUTTON:
+		{
+			//if (HIWORD(wParam) == BN_CLICKED)
+			//{
+			//	HBITMAP hBitmap = (HBITMAP)LoadImage(GetModuleHandle(NULL), "button_1_pressed.bmp", IMAGE_BITMAP, 100, 100, LR_LOADFROMFILE);
+			//	HWND hRoundButton = GetDlgItem(hwnd, wParam);
+			//	HDC hdcButton = GetDC(hRoundButton);
+			//	//SendMessage(hRoundButton, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
+			//	//DRAWITEMSTRUCT* distr = (DRAWITEMSTRUCT*)lParam;
+			//	HDC hDCbmp = CreateCompatibleDC(hdcButton);
+			//	SelectObject(hDCbmp, hBitmap);
+			//	HRGN hRgn = CreateEllipticRgn(0, 0, 100, 100);
+			//	//SetWindowRgn(hRoundButton, hRgn, TRUE);
+			//	BitBlt(hdcButton, 0, 0, 100, 100, hDCbmp, 0, 0, SRCAND);
+			//	DeleteObject(hRgn);
+			//	DeleteDC(hDCbmp);
+			//	DeleteObject(hBitmap);
+			//}
+		case WM_LBUTTONDOWN:
+		{
+			HBITMAP hBitmap = (HBITMAP)LoadImage(GetModuleHandle(NULL), "button_1_pressed.bmp", IMAGE_BITMAP, 100, 100, LR_LOADFROMFILE);
+			HWND hRoundButton = GetDlgItem(hwnd, wParam);
+			HDC hdcButton = GetDC(hRoundButton);
+			HDC hDCbmp = CreateCompatibleDC(hdcButton);
+			SelectObject(hDCbmp, hBitmap);
+			HRGN hRgn = CreateEllipticRgn(0, 0, 100, 100);
+			//SetWindowRgn(hRoundButton, hRgn, TRUE);
+			BitBlt(hdcButton, 0, 0, 100, 100, hDCbmp, 0, 0, SRCAND);
+			DeleteObject(hRgn);
+			DeleteDC(hDCbmp);
+			DeleteObject(hBitmap);
+		}
+		break;
+		case WM_LBUTTONUP:
+		{
+			HBITMAP hBitmap = (HBITMAP)LoadImage(GetModuleHandle(NULL), "button_1.bmp", IMAGE_BITMAP, 100, 100, LR_LOADFROMFILE);
+			HWND hRoundButton = GetDlgItem(hwnd, wParam);
+			HDC hdcButton = GetDC(hRoundButton);
+			HDC hDCbmp = CreateCompatibleDC(hdcButton);
+			SelectObject(hDCbmp, hBitmap);
+			HRGN hRgn = CreateEllipticRgn(0, 0, 100, 100);
+			//SetWindowRgn(hRoundButton, hRgn, TRUE);
+			BitBlt(hdcButton, 0, 0, 100, 100, hDCbmp, 0, 0, SRCAND);
+			DeleteObject(hRgn);
+			DeleteDC(hDCbmp);
+			DeleteObject(hBitmap);
+		}
+		break;
+		}
+		break;
 		case IDC_CHECKBOX_MOUSE_COORDS:
 			if (SendMessage(GetDlgItem(hwnd, IDC_CHECKBOX_MOUSE_COORDS), BM_GETCHECK, 0, 0) == BST_CHECKED)bShowCoords = TRUE;
 			else bShowCoords = FALSE;
 			break;
 		}
 	}
-		break;
+	break;
 	case WM_DESTROY:PostQuitMessage(0); break;
-	case WM_CLOSE:	
+	case WM_CLOSE:
 		switch (MessageBox(hwnd, "Вы действительно хотите закрыть окно?", "Вопрос", MB_YESNO | MB_ICONQUESTION))
 		{
 		case IDYES:	DestroyWindow(hwnd);
