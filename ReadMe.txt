@@ -2,6 +2,9 @@
 https://www.youtube.com/playlist?list=PLeqyOOqxeiIPKFZv5zcgZrowcucM8n-wi
 
 TODO:
+После внесении изменений в текст, при закрытии программы, она должна спрашивать, "Сохранить изменения в файле"; 
+
+DONE:
 Реализовать пункты меню "File->Save" и "File->Save as";
 
 DONE:
