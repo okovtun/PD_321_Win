@@ -72,6 +72,8 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, IN
 INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	static CHAR szFileName[MAX_PATH]{};
+	static CHAR* szFileText = NULL;
+	static BOOL onSave = TRUE;
 	switch (uMsg)
 	{
 	case WM_CREATE:
@@ -82,7 +84,7 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		HWND hEdit = CreateWindowEx
 		(
 			NULL, RICHEDIT_CLASS, "",
-			WS_CHILD | WS_VISIBLE | ES_MULTILINE | ES_AUTOHSCROLL | ES_AUTOVSCROLL,
+			WS_CHILD | WS_VISIBLE | ES_MULTILINE | ES_AUTOHSCROLL | ES_AUTOVSCROLL | WS_HSCROLL | WS_VSCROLL,
 			0, 0,
 			rect.right, rect.bottom,
 			hwnd,
@@ -90,6 +92,8 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			GetModuleHandle(NULL),
 			NULL
 		);
+		//SendMessage(hEdit, EM_SETLIMITTEXT, 0x7FFFFFFE, 0);
+		SetFocus(hEdit);
 	}
 	break;
 	case WM_SIZE:
@@ -121,12 +125,16 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			if (GetOpenFileName(&ofn))
 			{
 				HWND hEdit = GetDlgItem(hwnd, IDC_EDIT);
-				LoadTextFileToEdit(hEdit, szFileName);
+				onSave = LoadTextFileToEdit(hEdit, szFileName);
 			}
 		}
 		break;
 		case ID_FILE_SAVE:
-			if (strlen(szFileName))SaveTextFileFromEdit(GetDlgItem(hwnd, IDC_EDIT), szFileName);
+			if (strlen(szFileName))
+			{
+				onSave = SaveTextFileFromEdit(GetDlgItem(hwnd, IDC_EDIT), szFileName);
+				SendMessage(GetDlgItem(hwnd, IDC_EDIT), EM_SETMODIFY, FALSE, 0);
+			}
 			else SendMessage(hwnd, WM_COMMAND, ID_FILE_SAVEAS, 0);
 			break;
 		case ID_FILE_SAVEAS:
@@ -143,7 +151,11 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			ofn.Flags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
 			ofn.lpstrDefExt = "txt";
 
-			if (GetSaveFileName(&ofn))SaveTextFileFromEdit(GetDlgItem(hwnd, IDC_EDIT), szFileName);
+			if (GetSaveFileName(&ofn))
+			{
+				onSave = SaveTextFileFromEdit(GetDlgItem(hwnd, IDC_EDIT), szFileName);
+				SendMessage(GetDlgItem(hwnd, IDC_EDIT), EM_SETMODIFY, FALSE, 0);
+			}
 		}
 		break;
 		case ID_HELP_ABOUT:
@@ -153,7 +165,27 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 	break;
 	case WM_DESTROY:PostQuitMessage(0);	break;
-	case WM_CLOSE:	DestroyWindow(hwnd); break;
+	case WM_CLOSE:
+		if (SendMessage(GetDlgItem(hwnd, IDC_EDIT), EM_GETMODIFY, 0, 0))
+		{
+			onSave = FALSE;
+			switch
+				(
+				MessageBox(
+					hwnd,
+					"Сохранить изменения в файле?",
+					"Хотите ли Вы",
+					MB_YESNOCANCEL | MB_ICONQUESTION)
+				)
+			{
+			case IDYES:		SendMessage(hwnd, WM_COMMAND, ID_FILE_SAVE, 0);
+							if (onSave)DestroyWindow(hwnd); break;
+			case IDNO:		DestroyWindow(hwnd);
+			case IDCANCEL:	break;
+			}
+		}
+		else DestroyWindow(hwnd);
+		break;
 	default:		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 	return FALSE;
