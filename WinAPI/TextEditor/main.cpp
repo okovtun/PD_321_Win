@@ -9,6 +9,9 @@ INT CALLBACK DlgProcAbout(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 BOOL LoadTextFileToEdit(HWND hEdit, LPCSTR lpszFileName);
 BOOL SaveTextFileFromEdit(HWND hEdit, LPCSTR lpszFileName);
+VOID SelectFont(HWND hwnd);
+HFONT g_hFont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
+COLORREF g_RGB_Text = RGB(0, 0, 0);
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, INT nCmdShow)
 {
@@ -59,6 +62,9 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, IN
 	ShowWindow(hwnd, nCmdShow);
 	UpdateWindow(hwnd);
 
+	/*RegisterHotKey(hwnd, ID_FILE_OPEN + 10000, MOD_CONTROL, 'O');
+	RegisterHotKey(hwnd, ID_FILE_SAVE + 10000, MOD_CONTROL, 'S');*/
+
 	//3) Запуск цикла сообщений:
 	MSG msg;
 	while (GetMessage(&msg, NULL, 0, 0) > 0)
@@ -74,6 +80,7 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	static CHAR szFileName[MAX_PATH]{};
 	static CHAR* szFileText = NULL;
 	static BOOL onSave = TRUE;
+	
 	switch (uMsg)
 	{
 	case WM_CREATE:
@@ -92,8 +99,24 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			GetModuleHandle(NULL),
 			NULL
 		);
+		g_hFont = CreateFont
+		(
+			32, 11,
+			0, 0, FW_MEDIUM,
+			0, 0, 0,	//Italic, Underline, Strikeout
+			RUSSIAN_CHARSET,
+			OUT_TT_PRECIS,
+			CLIP_CHARACTER_PRECIS,
+			ANTIALIASED_QUALITY,
+			FF_DONTCARE,
+			"Tahoma"
+		);
+		SendMessage(hEdit, WM_SETFONT, (WPARAM)g_hFont, TRUE);
 		//SendMessage(hEdit, EM_SETLIMITTEXT, 0x7FFFFFFE, 0);
 		SetFocus(hEdit);
+
+		RegisterHotKey(hwnd, ID_FILE_OPEN + 10000, MOD_CONTROL, 'O');
+		RegisterHotKey(hwnd, ID_FILE_SAVE + 10000, MOD_CONTROL, 'S');
 	}
 	break;
 	case WM_SIZE:
@@ -101,6 +124,16 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		RECT rect;
 		GetClientRect(hwnd, &rect);
 		SetWindowPos(GetDlgItem(hwnd, IDC_EDIT), NULL, rect.left, rect.top, rect.right, rect.bottom, SWP_NOZORDER);
+	}
+	break;
+	case WM_CTLCOLOREDIT:
+	{
+		HDC hdc = (HDC)wParam;
+		SetBkMode(hdc, OPAQUE);
+		SetBkColor(hdc, RGB(255,255,255));
+		HBRUSH hBrush = CreateSolidBrush(g_RGB_Text);
+		SetTextColor(hdc, g_RGB_Text);
+		return (LRESULT)hBrush;
 	}
 	break;
 	case WM_COMMAND:
@@ -158,10 +191,28 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 		}
 		break;
+		case ID_FORMAT_FONT: SelectFont(hwnd); break;
 		case ID_HELP_ABOUT:
 			DialogBoxParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_DIALOG_ABOUT), hwnd, DlgProcAbout, 0);
 			break;
 		}
+	}
+	break;
+	case WM_HOTKEY:
+	{
+		switch (wParam)
+		{
+		case ID_FILE_OPEN+10000: //SendMessage(hwnd, WM_COMMAND, LOWORD(wParam - 10000), 0); break;
+		case ID_FILE_SAVE+10000: SendMessage(hwnd, WM_COMMAND, LOWORD(wParam - 10000), 0); break;
+		}
+		//if (GetKeyState(VK_CONTROL) < 0)
+		//{
+		//	//MessageBox(hwnd, "Была нажата клавиша Shift", "Info", MB_OK | MB_ICONINFORMATION);
+		//	switch (LOWORD(wParam))
+		//	{
+		//	case 0x53:	SendMessage(hwnd, WM_COMMAND, LOWORD(ID_FILE_SAVE), 0); break;
+		//	}
+		//}
 	}
 	break;
 	case WM_DESTROY:PostQuitMessage(0);	break;
@@ -171,15 +222,15 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			onSave = FALSE;
 			switch
 				(
-				MessageBox(
-					hwnd,
-					"Сохранить изменения в файле?",
-					"Хотите ли Вы",
-					MB_YESNOCANCEL | MB_ICONQUESTION)
-				)
+					MessageBox(
+						hwnd,
+						"Сохранить изменения в файле?",
+						"Хотите ли Вы",
+						MB_YESNOCANCEL | MB_ICONQUESTION)
+					)
 			{
 			case IDYES:		SendMessage(hwnd, WM_COMMAND, ID_FILE_SAVE, 0);
-							if (onSave)DestroyWindow(hwnd); break;
+				if (onSave)DestroyWindow(hwnd); break;
 			case IDNO:		DestroyWindow(hwnd);
 			case IDCANCEL:	break;
 			}
@@ -254,4 +305,37 @@ BOOL SaveTextFileFromEdit(HWND hEdit, LPCSTR lpszFileName)
 		CloseHandle(hFile);
 	}
 	return bSuccess;
+}
+VOID SelectFont(HWND hwnd)
+{
+	HWND hEdit = GetDlgItem(hwnd, IDC_EDIT);
+
+	CHOOSEFONT cf;
+	LOGFONT lf;
+	ZeroMemory(&cf, sizeof(cf));
+	ZeroMemory(&lf, sizeof(lf));
+
+	GetObject(g_hFont, sizeof(LOGFONT), &lf);
+
+	cf.lStructSize = sizeof(cf);
+	cf.hwndOwner = hwnd;
+
+	cf.Flags = CF_EFFECTS | CF_INITTOLOGFONTSTRUCT | CF_SCREENFONTS;
+
+	cf.hInstance = GetModuleHandle(NULL);
+	cf.lpLogFont = &lf;
+	cf.rgbColors = g_RGB_Text;
+
+	if (ChooseFont(&cf))
+	{
+		HFONT hf = CreateFontIndirect(&lf);
+		if (hf)g_hFont = hf;
+		else MessageBox(hwnd, "Font creation failed", "Error", MB_OK | MB_ICONERROR);
+	}
+	SendMessage(hEdit, WM_SETFONT, (WPARAM)g_hFont, TRUE);
+	g_RGB_Text = cf.rgbColors;
+
+	HDC hdc = GetDC(hEdit);
+	SendMessage(hwnd, WM_CTLCOLOREDIT, (WPARAM)hdc, (LPARAM)hEdit);
+	ReleaseDC(hEdit, hdc);
 }

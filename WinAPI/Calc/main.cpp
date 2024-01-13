@@ -329,7 +329,7 @@ INT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	break;
 	case WM_KEYDOWN:
 	{
-		if (GetKeyState(VK_SHIFT) < 0 && wParam == 0x38)SendMessage(hwnd, WM_COMMAND, IDC_BUTTON_ASTER, 0);
+		if (GetKeyState(VK_CONTROL) < 0 && wParam == 0x38)SendMessage(hwnd, WM_COMMAND, IDC_BUTTON_ASTER, 0);
 		else if (wParam >= 0x30 && wParam <= 0x39)
 			SendMessage(hwnd, WM_COMMAND, LOWORD(wParam - 0x30 + 1000), 0);
 		if (wParam >= 0x60 && wParam <= 0x69)

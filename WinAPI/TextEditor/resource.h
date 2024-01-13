@@ -18,6 +18,8 @@
 #define ID_EDIT                         40008
 #define ID_VIEW                         40009
 
+#define ID_FILE_SAVE_HK					50004
+
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
