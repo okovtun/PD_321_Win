@@ -15,8 +15,12 @@ namespace WindowsForms
 		public Form1()
 		{
 			InitializeComponent();
-			label1.Width = this.Width - 10;
-			label2.Width = this.Width - 10;
+			this.StartPosition = FormStartPosition.Manual;
+			int startX = Screen.PrimaryScreen.Bounds.Width - this.Width - 25;
+			int startY = 25;
+			this.SetDesktopLocation(startX, startY);
+			ControlsVisibility(false);
+			cbShowDate.Checked = true;
 		}
 		void ControlsVisibility(bool visible)
 		{
@@ -33,8 +37,13 @@ namespace WindowsForms
 			//https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings
 			//https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings
 			label1.Text = DateTime.Now.ToString("hh:mm:ss tt");
-			label2.Text = DateTime.Now.ToString("yyyy.MM.dd ddd");
-			label2.Visible = cbShowDate.Checked;
+			//label2.Text = DateTime.Now.ToString("yyyy.MM.dd ddd");
+			//label2.Visible = cbShowDate.Checked;
+			if (cbShowDate.Checked)
+			{
+				string date = DateTime.Now.ToString("yyyy.MM.dd ddd");
+				label1.Text = $"{label1.Text}\n{date}";
+			}
 		}
 
 		private void btnExit_Click(object sender, EventArgs e)

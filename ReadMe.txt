@@ -2,6 +2,15 @@
 https://www.youtube.com/playlist?list=PLeqyOOqxeiIPKFZv5zcgZrowcucM8n-wi
 
 TODO:
+1. Программа должна отображать значек в System tray;
+2. Элементы управления должны отображаться не при наведении указателя мыши, 
+   а при двойном щелчке по часам;
+3. При нажатии ПКМ на значек в System Tray должно появляться контекстное меню:
+	Show controls
+	Show date
+	Exit
+
+TODO:
 1. Добавить сочетания клавиш для стандартных функций:	DONE
 	File->New;
 	File->Open;
