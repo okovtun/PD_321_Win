@@ -7,11 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.Drawing.Text;
 
 namespace WindowsForms
 {
 	public partial class Form1 : Form
 	{
+		bool showDate;
+		bool showControls;
+		ChooseFont chooseFont;
 		public Form1()
 		{
 			InitializeComponent();
@@ -20,16 +25,23 @@ namespace WindowsForms
 			int startY = 25;
 			this.SetDesktopLocation(startX, startY);
 			ControlsVisibility(false);
-			cbShowDate.Checked = true;
+			showDate = false;
+			showControls = false;
+			Directory.SetCurrentDirectory("..\\..\\Fonts");
+			chooseFont = new ChooseFont();
+			label1.ForeColor = Color.Red;
+			label1.BackColor = Color.Black;
 		}
 		void ControlsVisibility(bool visible)
 		{
 			cbShowDate.Visible = visible;
 			btnExit.Visible = visible;
 			btnHideControls.Visible = visible;
+			btnChooseFont.Visible = visible;
 			this.ShowInTaskbar = visible;
 			this.TransparencyKey = !visible ? SystemColors.Control : Color.White;
 			this.FormBorderStyle = !visible ? FormBorderStyle.None : FormBorderStyle.Sizable;
+			showControlsToolStripMenuItem.Checked = visible;
 		}
 
 		private void timer1_Tick(object sender, EventArgs e)
@@ -53,12 +65,35 @@ namespace WindowsForms
 
 		private void btnHideControls_Click(object sender, EventArgs e)
 		{
-			ControlsVisibility(false);
+			showControls = false;
+			ControlsVisibility(showControls);
 		}
 
 		private void label1_MouseHover(object sender, EventArgs e)
 		{
 			ControlsVisibility(true);
+		}
+
+		private void showDateToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			showDate = showDateToolStripMenuItem.Checked;
+			cbShowDate.Checked = showDate;
+		}
+
+		private void showControlsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			showControls = showControlsToolStripMenuItem.Checked;
+			ControlsVisibility(showControls);
+		}
+
+		private void btnChooseFont_Click(object sender, EventArgs e)
+		{
+			//chooseFont.NewFont = label1.Font;
+			DialogResult result = chooseFont.ShowDialog(this);
+			if (result == DialogResult.OK)
+			{
+				label1.Font = chooseFont.NewFont; 
+			}
 		}
 	}
 }
