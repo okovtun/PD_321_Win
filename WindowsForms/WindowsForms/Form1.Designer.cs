@@ -34,6 +34,8 @@
 			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.showDateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.showControlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+			this.chooseFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -42,8 +44,11 @@
 			this.btnExit = new System.Windows.Forms.Button();
 			this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
 			this.btnChooseFont = new System.Windows.Forms.Button();
-			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-			this.chooseFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.colorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.foregroundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.backgroundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+			this.colorDialog2 = new System.Windows.Forms.ColorDialog();
 			this.contextMenuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -67,17 +72,18 @@
             this.showDateToolStripMenuItem,
             this.showControlsToolStripMenuItem,
             this.toolStripMenuItem2,
+            this.colorToolStripMenuItem,
             this.chooseFontToolStripMenuItem,
             this.toolStripMenuItem1,
             this.exitToolStripMenuItem});
 			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(150, 104);
+			this.contextMenuStrip1.Size = new System.Drawing.Size(181, 148);
 			// 
 			// showDateToolStripMenuItem
 			// 
 			this.showDateToolStripMenuItem.CheckOnClick = true;
 			this.showDateToolStripMenuItem.Name = "showDateToolStripMenuItem";
-			this.showDateToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+			this.showDateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.showDateToolStripMenuItem.Text = "Show date";
 			this.showDateToolStripMenuItem.Click += new System.EventHandler(this.showDateToolStripMenuItem_Click);
 			// 
@@ -85,26 +91,38 @@
 			// 
 			this.showControlsToolStripMenuItem.CheckOnClick = true;
 			this.showControlsToolStripMenuItem.Name = "showControlsToolStripMenuItem";
-			this.showControlsToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+			this.showControlsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.showControlsToolStripMenuItem.Text = "Show controls";
 			this.showControlsToolStripMenuItem.Click += new System.EventHandler(this.showControlsToolStripMenuItem_Click);
+			// 
+			// toolStripMenuItem2
+			// 
+			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
+			// 
+			// chooseFontToolStripMenuItem
+			// 
+			this.chooseFontToolStripMenuItem.Name = "chooseFontToolStripMenuItem";
+			this.chooseFontToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.chooseFontToolStripMenuItem.Text = "Choose font";
+			this.chooseFontToolStripMenuItem.Click += new System.EventHandler(this.btnChooseFont_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(146, 6);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
 			// 
 			// exitToolStripMenuItem
 			// 
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.exitToolStripMenuItem.Text = "Exit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.btnExit_Click);
 			// 
 			// timer1
 			// 
 			this.timer1.Enabled = true;
-			this.timer1.Interval = 1000;
+			this.timer1.Interval = 500;
 			this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
 			// 
 			// cbShowDate
@@ -158,17 +176,28 @@
 			this.btnChooseFont.UseVisualStyleBackColor = true;
 			this.btnChooseFont.Click += new System.EventHandler(this.btnChooseFont_Click);
 			// 
-			// toolStripMenuItem2
+			// colorToolStripMenuItem
 			// 
-			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(146, 6);
+			this.colorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.foregroundToolStripMenuItem,
+            this.backgroundToolStripMenuItem});
+			this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";
+			this.colorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.colorToolStripMenuItem.Text = "Color";
 			// 
-			// chooseFontToolStripMenuItem
+			// foregroundToolStripMenuItem
 			// 
-			this.chooseFontToolStripMenuItem.Name = "chooseFontToolStripMenuItem";
-			this.chooseFontToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-			this.chooseFontToolStripMenuItem.Text = "Choose font";
-			this.chooseFontToolStripMenuItem.Click += new System.EventHandler(this.btnChooseFont_Click);
+			this.foregroundToolStripMenuItem.Name = "foregroundToolStripMenuItem";
+			this.foregroundToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.foregroundToolStripMenuItem.Text = "Foreground";
+			this.foregroundToolStripMenuItem.Click += new System.EventHandler(this.foregroundToolStripMenuItem_Click);
+			// 
+			// backgroundToolStripMenuItem
+			// 
+			this.backgroundToolStripMenuItem.Name = "backgroundToolStripMenuItem";
+			this.backgroundToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.backgroundToolStripMenuItem.Text = "Background";
+			this.backgroundToolStripMenuItem.Click += new System.EventHandler(this.backgroundToolStripMenuItem_Click);
 			// 
 			// Form1
 			// 
@@ -207,6 +236,11 @@
 		private System.Windows.Forms.Button btnChooseFont;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
 		private System.Windows.Forms.ToolStripMenuItem chooseFontToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem colorToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem foregroundToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem backgroundToolStripMenuItem;
+		private System.Windows.Forms.ColorDialog colorDialog1;
+		private System.Windows.Forms.ColorDialog colorDialog2;
 	}
 }
 

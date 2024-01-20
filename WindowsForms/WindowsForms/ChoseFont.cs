@@ -14,6 +14,9 @@ namespace WindowsForms
 {
 	public partial class ChooseFont : Form
 	{
+		public int Index { get { return index; } }
+		public string[] AllFonts { get { return allFonts; } }
+		int index;
 		string[] allFonts;
 		public System.Drawing.Font NewFont { get; set; }
 		public ChooseFont()
@@ -47,6 +50,7 @@ namespace WindowsForms
 			pfc.AddFontFile(allFonts[cbFonts.SelectedIndex]);
 			NewFont = new Font(pfc.Families[0], 48);
 			lblExample.Font = NewFont;
+			index = cbFonts.SelectedIndex;
 		}
 	}
 }

@@ -14,6 +14,12 @@ namespace WindowsForms
 {
 	public partial class Form1 : Form
 	{
+		string fontFile;
+		int size;
+		System.Drawing.Font font;
+		Color foreground;
+		Color background;
+
 		bool showDate;
 		bool showControls;
 		ChooseFont chooseFont;
@@ -31,6 +37,8 @@ namespace WindowsForms
 			chooseFont = new ChooseFont();
 			label1.ForeColor = Color.Red;
 			label1.BackColor = Color.Black;
+			size = 48;
+			LoadSettings();
 		}
 		void ControlsVisibility(bool visible)
 		{
@@ -60,6 +68,7 @@ namespace WindowsForms
 
 		private void btnExit_Click(object sender, EventArgs e)
 		{
+			SaveSettings();
 			this.Close();
 		}
 
@@ -92,8 +101,53 @@ namespace WindowsForms
 			DialogResult result = chooseFont.ShowDialog(this);
 			if (result == DialogResult.OK)
 			{
-				label1.Font = chooseFont.NewFont; 
+				label1.Font = chooseFont.NewFont;
+				fontFile = chooseFont.AllFonts[chooseFont.Index];
 			}
+		}
+		public void SaveSettings()
+		{
+			StreamWriter sw = new StreamWriter("Settings.cfg");
+			sw.WriteLine(fontFile);
+			sw.WriteLine(label1.Font.Size);
+			sw.WriteLine(label1.ForeColor.ToArgb());
+			sw.WriteLine(label1.BackColor.ToArgb());
+			sw.Close();
+		}
+		public void LoadSettings()
+		{
+			//Directory.SetCurrentDirectory("..\\..\\Fonts");
+			MessageBox.Show(this, Directory.GetCurrentDirectory());
+			StreamReader sr = new StreamReader("Settings.cfg");
+			fontFile = sr.ReadLine();
+			size = Convert.ToInt32(sr.ReadLine());
+			foreground = Color.FromArgb(Convert.ToInt32(sr.ReadLine()));
+			background = Color.FromArgb(Convert.ToInt32(sr.ReadLine()));
+			sr.Close();
+
+			PrivateFontCollection pfc = new PrivateFontCollection();
+			pfc.AddFontFile(fontFile);
+			System.Drawing.Font font = new System.Drawing.Font(pfc.Families[0], size);
+			label1.Font = font;
+			label1.BackColor = background;
+			label1.ForeColor = foreground;
+		}
+
+		private void foregroundToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			colorDialog1 = new ColorDialog();
+			colorDialog1.ShowDialog();
+			foreground = colorDialog1.Color;
+			label1.ForeColor = foreground;
+		}
+
+		private void backgroundToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			colorDialog2 = new ColorDialog();
+			colorDialog2.ShowDialog();
+
+			background = colorDialog2.Color;
+			label1.BackColor = background;
 		}
 	}
 }
