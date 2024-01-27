@@ -24,6 +24,11 @@ namespace WindowsForms
 		bool showControls;
 		ChooseFont chooseFont;
 		int fontIndex;
+
+		////////////////////////////
+
+		Alarm alarm;
+
 		public Form1()
 		{
 			InitializeComponent();
@@ -44,6 +49,12 @@ namespace WindowsForms
 			colorDialog2 = new ColorDialog();
 			colorDialog1.Color = foreground;
 			colorDialog2.Color = background;
+
+			TopmostToolStripMenuItem.Checked = true;
+
+			////////////////////////////////////////////////////////////
+
+			alarm = new Alarm();
 		}
 		void ControlsVisibility(bool visible)
 		{
@@ -164,6 +175,22 @@ namespace WindowsForms
 				background = colorDialog2.Color;
 				label1.BackColor = background; 
 			}
+		}
+
+		private void TopmostToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.TopMost = TopmostToolStripMenuItem.Checked;
+		}
+
+		private void notifyIcon1_DoubleClick(object sender, EventArgs e)
+		{
+			this.WindowState = FormWindowState.Minimized;
+			this.WindowState = FormWindowState.Normal;
+		}
+
+		private void alarmToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			alarm.ShowDialog();
 		}
 	}
 }
