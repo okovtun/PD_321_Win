@@ -44,6 +44,9 @@ namespace WindowsForms
 			colorDialog2 = new ColorDialog();
 			colorDialog1.Color = foreground;
 			colorDialog2.Color = background;
+
+			SetMainDebug();
+			SetChooseDebug();
 		}
 		void ControlsVisibility(bool visible)
 		{
@@ -69,6 +72,8 @@ namespace WindowsForms
 				string date = DateTime.Now.ToString("yyyy.MM.dd ddd");
 				label1.Text = $"{label1.Text}\n{date}";
 			}
+			SetMainDebug();
+			SetChooseDebug();
 		}
 
 		private void btnExit_Click(object sender, EventArgs e)
@@ -104,27 +109,35 @@ namespace WindowsForms
 		{
 			//chooseFont.NewFont = label1.Font;
 			//ChooseFont chooseFont = new ChooseFont(fontFile);
-			chooseFont.SetActualFont(fontIndex);
+			//ChooseFont chooseFont = new ChooseFont(fontIndex);
+			//chooseFont.SetActualFont(fontIndex);
 			DialogResult result = chooseFont.ShowDialog(this);
 			if (result == DialogResult.OK)
 			{
-				label1.Font = chooseFont.NewFont;
+				label1.Font = chooseFont.NewFont;//!!!
+				//label1.Font = (Font)chooseFont.NewFont.Clone();//!!!
 				fontFile = chooseFont.AllFonts[chooseFont.Index];
 				fontIndex = chooseFont.Index;
 			}
-			SetMainDebug();
-			SetChooseDebug();
+			//SetMainDebug();
+			//SetChooseDebug();
 		}
 		private void SetMainDebug()
 		{
-			lblDebugMainFont.Text = $"fontFile:	{fontFile};\n";
-			//lblDebugMainFont.Text += $"font:		{font};\n";
+			lblDebugMainFont.Text = "";
+			lblDebugMainFont.Text += $"Font hash:{label1.Font.GetHashCode()};\n";
+			//lblDebugMainFont.Text += $"Name hash:{label1.Font.Name.GetHashCode()};\n";
 			lblDebugMainFont.Text += $"fontIndex:	{fontIndex};\n";
+			lblDebugMainFont.Text += $"fontFile:	{fontFile};\n";
+			//lblDebugMainFont.Text += $"font:		{font};\n";
 			lblDebugMainFont.Text += $"label1.Font:{label1.Font.Name};\n";
 		}
 		private void SetChooseDebug()
 		{
-			lblDebugCooseFont.Text = $"index:		{chooseFont.Index};\n";
+			lblDebugCooseFont.Text = "";
+			lblDebugCooseFont.Text += $"NewFont hash:{chooseFont.NewFont.GetHashCode()};\n";
+			//lblDebugCooseFont.Text += $"NewName hash:{chooseFont.NewFont.Name.GetHashCode()};\n";
+			lblDebugCooseFont.Text += $"index:		{chooseFont.Index};\n";
 			lblDebugCooseFont.Text += $"FontFromArr:{chooseFont.AllFonts[chooseFont.Index]};\n";
 			//lblDebugCooseFont.Text += $"ExampleFont:{chooseFont.LblExample.Font.Name};\n";
 			if (chooseFont.NewFont.Name != null)
