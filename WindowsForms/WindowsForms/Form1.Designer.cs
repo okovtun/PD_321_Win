@@ -49,8 +49,6 @@
 			this.btnChooseFont = new System.Windows.Forms.Button();
 			this.colorDialog1 = new System.Windows.Forms.ColorDialog();
 			this.colorDialog2 = new System.Windows.Forms.ColorDialog();
-			this.lblDebugMainFont = new System.Windows.Forms.Label();
-			this.lblDebugCooseFont = new System.Windows.Forms.Label();
 			this.contextMenuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -201,35 +199,11 @@
 			this.btnChooseFont.UseVisualStyleBackColor = true;
 			this.btnChooseFont.Click += new System.EventHandler(this.btnChooseFont_Click);
 			// 
-			// lblDebugMainFont
-			// 
-			this.lblDebugMainFont.AutoSize = true;
-			this.lblDebugMainFont.BackColor = System.Drawing.SystemColors.ActiveCaption;
-			this.lblDebugMainFont.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.lblDebugMainFont.Location = new System.Drawing.Point(270, 116);
-			this.lblDebugMainFont.Name = "lblDebugMainFont";
-			this.lblDebugMainFont.Size = new System.Drawing.Size(43, 20);
-			this.lblDebugMainFont.TabIndex = 6;
-			this.lblDebugMainFont.Text = "Main";
-			// 
-			// lblDebugCooseFont
-			// 
-			this.lblDebugCooseFont.AutoSize = true;
-			this.lblDebugCooseFont.BackColor = System.Drawing.SystemColors.ActiveCaption;
-			this.lblDebugCooseFont.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.lblDebugCooseFont.Location = new System.Drawing.Point(270, 255);
-			this.lblDebugCooseFont.Name = "lblDebugCooseFont";
-			this.lblDebugCooseFont.Size = new System.Drawing.Size(55, 20);
-			this.lblDebugCooseFont.TabIndex = 7;
-			this.lblDebugCooseFont.Text = "Coose";
-			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1258, 450);
-			this.Controls.Add(this.lblDebugCooseFont);
-			this.Controls.Add(this.lblDebugMainFont);
+			this.ClientSize = new System.Drawing.Size(485, 450);
 			this.Controls.Add(this.btnChooseFont);
 			this.Controls.Add(this.btnExit);
 			this.Controls.Add(this.btnHideControls);
@@ -267,8 +241,6 @@
 		private System.Windows.Forms.ToolStripMenuItem backgroundToolStripMenuItem;
 		private System.Windows.Forms.ColorDialog colorDialog1;
 		private System.Windows.Forms.ColorDialog colorDialog2;
-		private System.Windows.Forms.Label lblDebugMainFont;
-		private System.Windows.Forms.Label lblDebugCooseFont;
 	}
 }
 

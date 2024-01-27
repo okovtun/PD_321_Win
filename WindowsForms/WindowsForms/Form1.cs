@@ -112,24 +112,8 @@ namespace WindowsForms
 				fontFile = chooseFont.AllFonts[chooseFont.Index];
 				fontIndex = chooseFont.Index;
 			}
-			SetMainDebug();
-			SetChooseDebug();
 		}
-		private void SetMainDebug()
-		{
-			lblDebugMainFont.Text = $"fontFile:	{fontFile};\n";
-			//lblDebugMainFont.Text += $"font:		{font};\n";
-			lblDebugMainFont.Text += $"fontIndex:	{fontIndex};\n";
-			lblDebugMainFont.Text += $"label1.Font:{label1.Font.Name};\n";
-		}
-		private void SetChooseDebug()
-		{
-			lblDebugCooseFont.Text = $"index:		{chooseFont.Index};\n";
-			lblDebugCooseFont.Text += $"FontFromArr:{chooseFont.AllFonts[chooseFont.Index]};\n";
-			//lblDebugCooseFont.Text += $"ExampleFont:{chooseFont.LblExample.Font.Name};\n";
-			if (chooseFont.NewFont.Name != null)
-				lblDebugCooseFont.Text += $"NewFont:		{chooseFont.NewFont.Name}";
-		}
+		
 		public void SaveSettings()
 		{
 			StreamWriter sw = new StreamWriter("Settings.cfg");
