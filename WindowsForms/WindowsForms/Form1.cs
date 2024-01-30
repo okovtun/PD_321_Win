@@ -27,7 +27,7 @@ namespace WindowsForms
 
 		////////////////////////////
 
-		Alarm alarm;
+		Alarms alarm;
 
 		public Form1()
 		{
@@ -54,7 +54,7 @@ namespace WindowsForms
 
 			////////////////////////////////////////////////////////////
 
-			alarm = new Alarm();
+			alarm = new Alarms();
 		}
 		void ControlsVisibility(bool visible)
 		{

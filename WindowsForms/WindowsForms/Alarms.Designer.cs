@@ -1,6 +1,6 @@
 ﻿namespace WindowsForms
 {
-	partial class Alarm
+	partial class Alarms
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Alarm));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Alarms));
 			this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
 			this.lblSoundFile = new System.Windows.Forms.Label();
 			this.btnOK = new System.Windows.Forms.Button();
@@ -36,6 +36,8 @@
 			this.btnSelectSound = new System.Windows.Forms.Button();
 			this.lblCurrentDirectory = new System.Windows.Forms.Label();
 			this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
+			this.listBoxAlarms = new System.Windows.Forms.ListBox();
+			this.btnAddAlarm = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -59,8 +61,9 @@
 			// 
 			// btnOK
 			// 
+			this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.btnOK.Location = new System.Drawing.Point(392, 119);
+			this.btnOK.Location = new System.Drawing.Point(423, 311);
 			this.btnOK.Name = "btnOK";
 			this.btnOK.Size = new System.Drawing.Size(75, 23);
 			this.btnOK.TabIndex = 2;
@@ -69,8 +72,9 @@
 			// 
 			// btnCancel
 			// 
+			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btnCancel.Location = new System.Drawing.Point(473, 119);
+			this.btnCancel.Location = new System.Drawing.Point(504, 311);
 			this.btnCancel.Name = "btnCancel";
 			this.btnCancel.Size = new System.Drawing.Size(75, 23);
 			this.btnCancel.TabIndex = 3;
@@ -79,7 +83,8 @@
 			// 
 			// btnSelectSound
 			// 
-			this.btnSelectSound.Location = new System.Drawing.Point(16, 119);
+			this.btnSelectSound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.btnSelectSound.Location = new System.Drawing.Point(16, 311);
 			this.btnSelectSound.Name = "btnSelectSound";
 			this.btnSelectSound.Size = new System.Drawing.Size(84, 23);
 			this.btnSelectSound.TabIndex = 4;
@@ -99,17 +104,37 @@
 			// axWindowsMediaPlayer1
 			// 
 			this.axWindowsMediaPlayer1.Enabled = true;
-			this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(126, 57);
+			this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(338, 74);
 			this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
 			this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
-			this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(252, 48);
+			this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(252, 225);
 			this.axWindowsMediaPlayer1.TabIndex = 6;
 			// 
-			// Alarm
+			// listBoxAlarms
+			// 
+			this.listBoxAlarms.FormattingEnabled = true;
+			this.listBoxAlarms.Location = new System.Drawing.Point(16, 74);
+			this.listBoxAlarms.Name = "listBoxAlarms";
+			this.listBoxAlarms.Size = new System.Drawing.Size(316, 225);
+			this.listBoxAlarms.TabIndex = 7;
+			// 
+			// btnAddAlarm
+			// 
+			this.btnAddAlarm.Location = new System.Drawing.Point(106, 311);
+			this.btnAddAlarm.Name = "btnAddAlarm";
+			this.btnAddAlarm.Size = new System.Drawing.Size(75, 23);
+			this.btnAddAlarm.TabIndex = 8;
+			this.btnAddAlarm.Text = "Add alarm";
+			this.btnAddAlarm.UseVisualStyleBackColor = true;
+			this.btnAddAlarm.Click += new System.EventHandler(this.btnAddAlarm_Click);
+			// 
+			// Alarms
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(560, 154);
+			this.ClientSize = new System.Drawing.Size(591, 346);
+			this.Controls.Add(this.btnAddAlarm);
+			this.Controls.Add(this.listBoxAlarms);
 			this.Controls.Add(this.axWindowsMediaPlayer1);
 			this.Controls.Add(this.lblCurrentDirectory);
 			this.Controls.Add(this.btnSelectSound);
@@ -119,8 +144,8 @@
 			this.Controls.Add(this.dateTimePicker1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Name = "Alarm";
-			this.Text = "Alarm";
+			this.Name = "Alarms";
+			this.Text = "Alarms";
 			((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -136,5 +161,7 @@
 		private System.Windows.Forms.Button btnSelectSound;
 		private System.Windows.Forms.Label lblCurrentDirectory;
 		private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
+		private System.Windows.Forms.ListBox listBoxAlarms;
+		private System.Windows.Forms.Button btnAddAlarm;
 	}
 }

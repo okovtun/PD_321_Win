@@ -1,35 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
-using WMPLib;
 
 namespace WindowsForms
 {
-	public partial class Alarm : Form
+	public class Alarm
 	{
-		public Alarm()
+		public DateTime Date { get; set; }
+		public DateTime Time { get; set; }
+		public Byte WeekDays { get; set; }
+		public string Filename { get; set; }
+		public Alarm(DateTime time, string filename, byte weekdays = 0)
 		{
-			InitializeComponent();
+			this.Time = time;
+			this.Filename = filename;
+			this.WeekDays = weekdays;
 		}
-
-		private void btnSelectSound_Click(object sender, EventArgs e)
+		public override string ToString()
 		{
-			OpenFileDialog openFileDialog = new OpenFileDialog();
-			openFileDialog.Multiselect = false;
-			DialogResult result = openFileDialog.ShowDialog();
-			lblSoundFile.Text = openFileDialog.SafeFileName;
-			lblCurrentDirectory.Text = Directory.GetCurrentDirectory();
-			Stream file = openFileDialog.OpenFile();
-
-			axWindowsMediaPlayer1.URL = openFileDialog.FileName;
-			axWindowsMediaPlayer1.Ctlcontrols.play();
+			return $"Date:\t{Date.ToShortDateString()}\nTime:\t{Time.ToShortTimeString()}\nWeekDays:\t{WeekDays}\nFile:\t{Filename.Split('\\').Last()}";
 		}
 	}
 }
