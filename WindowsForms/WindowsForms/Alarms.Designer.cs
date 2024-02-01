@@ -63,7 +63,7 @@
 			// 
 			this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.btnOK.Location = new System.Drawing.Point(423, 311);
+			this.btnOK.Location = new System.Drawing.Point(551, 311);
 			this.btnOK.Name = "btnOK";
 			this.btnOK.Size = new System.Drawing.Size(75, 23);
 			this.btnOK.TabIndex = 2;
@@ -74,7 +74,7 @@
 			// 
 			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btnCancel.Location = new System.Drawing.Point(504, 311);
+			this.btnCancel.Location = new System.Drawing.Point(632, 311);
 			this.btnCancel.Name = "btnCancel";
 			this.btnCancel.Size = new System.Drawing.Size(75, 23);
 			this.btnCancel.TabIndex = 3;
@@ -104,7 +104,7 @@
 			// axWindowsMediaPlayer1
 			// 
 			this.axWindowsMediaPlayer1.Enabled = true;
-			this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(338, 74);
+			this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(455, 74);
 			this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
 			this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
 			this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(252, 225);
@@ -115,7 +115,7 @@
 			this.listBoxAlarms.FormattingEnabled = true;
 			this.listBoxAlarms.Location = new System.Drawing.Point(16, 74);
 			this.listBoxAlarms.Name = "listBoxAlarms";
-			this.listBoxAlarms.Size = new System.Drawing.Size(316, 225);
+			this.listBoxAlarms.Size = new System.Drawing.Size(433, 225);
 			this.listBoxAlarms.TabIndex = 7;
 			// 
 			// btnAddAlarm
@@ -132,7 +132,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(591, 346);
+			this.ClientSize = new System.Drawing.Size(719, 346);
 			this.Controls.Add(this.btnAddAlarm);
 			this.Controls.Add(this.listBoxAlarms);
 			this.Controls.Add(this.axWindowsMediaPlayer1);

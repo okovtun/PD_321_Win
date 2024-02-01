@@ -28,12 +28,17 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddAlarm));
 			this.dateTimePickerDate = new System.Windows.Forms.DateTimePicker();
 			this.dateTimePickerTime = new System.Windows.Forms.DateTimePicker();
 			this.labelFilename = new System.Windows.Forms.Label();
-			this.buttonAdd = new System.Windows.Forms.Button();
+			this.buttonChooseFile = new System.Windows.Forms.Button();
 			this.checkedListBoxDays = new System.Windows.Forms.CheckedListBox();
 			this.labelBitset = new System.Windows.Forms.Label();
+			this.buttonAdd = new System.Windows.Forms.Button();
+			this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
+			this.buttonCancel = new System.Windows.Forms.Button();
+			((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// dateTimePickerDate
@@ -55,22 +60,22 @@
 			// labelFilename
 			// 
 			this.labelFilename.AutoSize = true;
-			this.labelFilename.Location = new System.Drawing.Point(12, 67);
+			this.labelFilename.Location = new System.Drawing.Point(12, 83);
 			this.labelFilename.Name = "labelFilename";
 			this.labelFilename.Size = new System.Drawing.Size(71, 13);
 			this.labelFilename.TabIndex = 2;
 			this.labelFilename.Text = "labelFilename";
 			// 
-			// buttonAdd
+			// buttonChooseFile
 			// 
-			this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonAdd.Location = new System.Drawing.Point(209, 93);
-			this.buttonAdd.Name = "buttonAdd";
-			this.buttonAdd.Size = new System.Drawing.Size(75, 23);
-			this.buttonAdd.TabIndex = 3;
-			this.buttonAdd.Text = "Choose file";
-			this.buttonAdd.UseVisualStyleBackColor = true;
-			this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
+			this.buttonChooseFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.buttonChooseFile.Location = new System.Drawing.Point(13, 142);
+			this.buttonChooseFile.Name = "buttonChooseFile";
+			this.buttonChooseFile.Size = new System.Drawing.Size(75, 23);
+			this.buttonChooseFile.TabIndex = 3;
+			this.buttonChooseFile.Text = "Choose file";
+			this.buttonChooseFile.UseVisualStyleBackColor = true;
+			this.buttonChooseFile.Click += new System.EventHandler(this.buttonChooseFile_Click);
 			// 
 			// checkedListBoxDays
 			// 
@@ -101,20 +106,57 @@
 			this.labelBitset.TabIndex = 5;
 			this.labelBitset.Text = "Bitset";
 			// 
+			// buttonAdd
+			// 
+			this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.buttonAdd.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.buttonAdd.Location = new System.Drawing.Point(212, 142);
+			this.buttonAdd.Name = "buttonAdd";
+			this.buttonAdd.Size = new System.Drawing.Size(75, 23);
+			this.buttonAdd.TabIndex = 6;
+			this.buttonAdd.Text = "Add";
+			this.buttonAdd.UseVisualStyleBackColor = true;
+			this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
+			// 
+			// axWindowsMediaPlayer1
+			// 
+			this.axWindowsMediaPlayer1.Enabled = true;
+			this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(137, 83);
+			this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
+			this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
+			this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(225, 35);
+			this.axWindowsMediaPlayer1.TabIndex = 8;
+			// 
+			// buttonCancel
+			// 
+			this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.buttonCancel.Location = new System.Drawing.Point(294, 141);
+			this.buttonCancel.Name = "buttonCancel";
+			this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+			this.buttonCancel.TabIndex = 9;
+			this.buttonCancel.Text = "Cancel";
+			this.buttonCancel.UseVisualStyleBackColor = true;
+			this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+			// 
 			// AddAlarm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(394, 128);
+			this.ClientSize = new System.Drawing.Size(377, 177);
+			this.Controls.Add(this.buttonCancel);
+			this.Controls.Add(this.axWindowsMediaPlayer1);
+			this.Controls.Add(this.buttonAdd);
 			this.Controls.Add(this.labelBitset);
 			this.Controls.Add(this.checkedListBoxDays);
-			this.Controls.Add(this.buttonAdd);
+			this.Controls.Add(this.buttonChooseFile);
 			this.Controls.Add(this.labelFilename);
 			this.Controls.Add(this.dateTimePickerTime);
 			this.Controls.Add(this.dateTimePickerDate);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "AddAlarm";
 			this.Text = "AddAlarm";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AddAlarm_Closing);
+			((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -125,8 +167,12 @@
 		private System.Windows.Forms.DateTimePicker dateTimePickerDate;
 		private System.Windows.Forms.DateTimePicker dateTimePickerTime;
 		private System.Windows.Forms.Label labelFilename;
-		private System.Windows.Forms.Button buttonAdd;
+		private System.Windows.Forms.Button buttonChooseFile;
 		private System.Windows.Forms.CheckedListBox checkedListBoxDays;
 		private System.Windows.Forms.Label labelBitset;
+		private System.Windows.Forms.Button buttonAdd;
+		private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
+		private System.Windows.Forms.Button buttonCancel;
+		//private System.Windows.Forms.FormClosingEventHandler FormClosing;
 	}
 }

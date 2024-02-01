@@ -14,9 +14,11 @@ namespace WindowsForms
 {
 	public partial class Alarms : Form
 	{
+		HashSet<Alarm> alarms;
 		public Alarms()
 		{
 			InitializeComponent();
+			alarms = new HashSet<Alarm>();
 		}
 
 		private void btnSelectSound_Click(object sender, EventArgs e)
@@ -34,11 +36,14 @@ namespace WindowsForms
 
 		private void btnAddAlarm_Click(object sender, EventArgs e)
 		{
-			AddAlarm addAlarm = new AddAlarm();
+			AddAlarm addAlarm = new AddAlarm(alarms);
 			DialogResult result = addAlarm.ShowDialog(this);
-			if (result == DialogResult.OK)
+			if (result == DialogResult.OK && addAlarm.Alarm != null)
 			{
-				listBoxAlarms.Items.Add(addAlarm.Alarm.ToString());
+				//listBoxAlarms.Items.Add(addAlarm.Alarm.ToString());
+				alarms.Add(addAlarm.Alarm);
+				listBoxAlarms.Items.Clear();
+				listBoxAlarms.Items.AddRange(alarms.ToArray());
 			}
 		}
 	}

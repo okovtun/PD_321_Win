@@ -18,9 +18,18 @@ namespace WindowsForms
 			this.Filename = filename;
 			this.WeekDays = weekdays;
 		}
+		//public static bool operator ==(Alarm left, Alarm right)
+		//{
+		//	return left?.ToString() == right?.ToString();
+		//}
+		//public static bool operator !=(Alarm left, Alarm right)
+		//{
+		//	return left?.ToString() == right?.ToString();
+		//}
+
 		public override string ToString()
 		{
-			return $"Date:\t{Date.ToShortDateString()}\nTime:\t{Time.ToShortTimeString()}\nWeekDays:\t{WeekDays}\nFile:\t{Filename.Split('\\').Last()}";
+			return $"Date:\t{Date.ToShortDateString()}\nTime:\t{Time.ToString("hh:mm:ss tt")}\nWeekDays:\t{WeekDays}\nFile:\t{Filename.Split('\\').Last()}";
 		}
 	}
 }
