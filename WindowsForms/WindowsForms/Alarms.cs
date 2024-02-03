@@ -38,7 +38,7 @@ namespace WindowsForms
 		{
 			AddAlarm addAlarm = new AddAlarm(alarms);
 			DialogResult result = addAlarm.ShowDialog(this);
-			if (result == DialogResult.OK && addAlarm.Alarm != null)
+			if (/*result == DialogResult.OK &&*/ addAlarm.Alarm != null)
 			{
 				//listBoxAlarms.Items.Add(addAlarm.Alarm.ToString());
 				alarms.Add(addAlarm.Alarm);

@@ -14,6 +14,7 @@ namespace WindowsForms
 {
 	public partial class AddAlarm : Form
 	{
+		public bool IntervalOK { get; private set; }
 		HashSet<Alarm> alarms;
 		public Alarm Alarm { get; set; }
 		public AddAlarm()
@@ -21,6 +22,7 @@ namespace WindowsForms
 			InitializeComponent();
 			dateTimePickerTime.CustomFormat = "hh:mm:ss";
 			dateTimePickerTime.ShowUpDown = true;
+			IntervalOK = true;
 		}
 		public AddAlarm(HashSet<Alarm> alarms) : this()
 		{
@@ -82,6 +84,7 @@ namespace WindowsForms
 		private void AddAlarm_Closing(object sender, FormClosingEventArgs e)
 		{
 			axWindowsMediaPlayer1.Ctlcontrols.stop();
+			//buttonAdd.DialogResult = DialogResult.None;
 			//MessageBox.Show(this, "Buy", "Buy", MessageBoxButtons.OK);
 		}
 
@@ -92,21 +95,32 @@ namespace WindowsForms
 
 		private void buttonAdd_Click(object sender, EventArgs e)
 		{
-			bool ok = true;
-			if (alarms != null)
+			//buttonAdd.DialogResult = DialogResult.None;
+			IntervalOK = true;
+			if (alarms != null && Alarm != null)
 			{
+				Alarm.Time = dateTimePickerTime.Value;
 				TimeSpan interval = new TimeSpan(0, 0, 3, 0);
 				for (int i = 0; i < alarms.Count; i++)
 				{
-					if (Alarm.Time - alarms.ToArray()[i].Time < interval)
+					DateTime old_time = alarms.ToArray()[i].Time;
+					TimeSpan current_interval = Alarm.Time - old_time;
+					string message = $@"
+Too short interval:
+Interval:		{interval.ToString()}
+CurrentInterval:{current_interval.ToString()}
+
+";
+					if (current_interval < interval)
 					{
-						MessageBox.Show(this, "Too short interval", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-						ok = false;
+						MessageBox.Show(this, message, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+						IntervalOK = false;
 						return;
 					}
-				} 
+				}
 			}
-			if(ok)this.Close();
+			//buttonAdd.DialogResult = DialogResult.OK;
+			this.Close();
 		}
 	}
 }
