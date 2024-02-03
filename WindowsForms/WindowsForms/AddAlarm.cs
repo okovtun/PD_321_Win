@@ -14,6 +14,7 @@ namespace WindowsForms
 {
 	public partial class AddAlarm : Form
 	{
+		int index;
 		public bool IntervalOK { get; private set; }
 		HashSet<Alarm> alarms;
 		public Alarm Alarm { get; set; }
@@ -23,10 +24,26 @@ namespace WindowsForms
 			dateTimePickerTime.CustomFormat = "hh:mm:ss";
 			dateTimePickerTime.ShowUpDown = true;
 			IntervalOK = true;
+			index = -1;
 		}
 		public AddAlarm(HashSet<Alarm> alarms) : this()
 		{
 			this.alarms = new HashSet<Alarm>(alarms);
+		}
+		public AddAlarm(HashSet<Alarm> alarms, int index) : this(alarms)
+		{
+			Alarm = alarms.ToArray()[index];
+			SetDataFormAlarm();
+			buttonAdd.Text = "Apply";
+			this.index = index;
+		}
+		void SetDataFormAlarm()
+		{
+			if(Alarm.Date != new DateTime())dateTimePickerDate.Value = Alarm.Date;
+			dateTimePickerTime.Value = Alarm.Time;
+			labelFilename.Text = Alarm.ToString();
+			axWindowsMediaPlayer1.URL = Alarm.Filename;
+			axWindowsMediaPlayer1.Ctlcontrols.stop();
 		}
 		public byte GetBitSet()
 		{
@@ -48,7 +65,8 @@ namespace WindowsForms
 			if (result == DialogResult.OK)
 			{
 				filename = openFileDialog.FileName;
-				Alarm = new Alarm(dateTimePickerTime.Value, filename);
+				if (Alarm == null) Alarm = new Alarm(dateTimePickerTime.Value, filename);
+				else Alarm.Filename = filename;
 				labelFilename.Text = Alarm.ToString();
 				axWindowsMediaPlayer1.URL = Alarm.Filename;
 				axWindowsMediaPlayer1.Ctlcontrols.stop();
@@ -95,6 +113,16 @@ namespace WindowsForms
 
 		private void buttonAdd_Click(object sender, EventArgs e)
 		{
+			if (buttonAdd.Text == "Apply")
+			{
+				Alarm.Date = dateTimePickerDate.Value;
+				Alarm.Time = dateTimePickerTime.Value;
+				Alarm[] alarms = this.alarms.ToArray();
+				alarms[index] = Alarm;
+				this.alarms = new HashSet<Alarm>(alarms);
+				this.Close();
+				return;
+			}
 			//buttonAdd.DialogResult = DialogResult.None;
 			IntervalOK = true;
 			if (alarms != null && Alarm != null)

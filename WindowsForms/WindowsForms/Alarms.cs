@@ -46,5 +46,15 @@ namespace WindowsForms
 				listBoxAlarms.Items.AddRange(alarms.ToArray());
 			}
 		}
+
+		private void listBoxAlarms_DoubleClick(object sender, EventArgs e)
+		{
+			//MessageBox.Show(this, listBoxAlarms.SelectedItem.ToString(), "Alarm info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			AddAlarm addAlarm = new AddAlarm(alarms, listBoxAlarms.SelectedIndex);
+			addAlarm.ShowDialog(this);
+			alarms.Add(addAlarm.Alarm);
+			listBoxAlarms.Items.Clear();
+			listBoxAlarms.Items.AddRange(alarms.ToArray());
+		}
 	}
 }

@@ -114,10 +114,10 @@
 			// 
 			this.listBoxAlarms.FormattingEnabled = true;
 			this.listBoxAlarms.Location = new System.Drawing.Point(16, 74);
-			this.listBoxAlarms.MultiColumn = true;
 			this.listBoxAlarms.Name = "listBoxAlarms";
 			this.listBoxAlarms.Size = new System.Drawing.Size(433, 225);
 			this.listBoxAlarms.TabIndex = 7;
+			this.listBoxAlarms.DoubleClick += new System.EventHandler(this.listBoxAlarms_DoubleClick);
 			// 
 			// btnAddAlarm
 			// 
