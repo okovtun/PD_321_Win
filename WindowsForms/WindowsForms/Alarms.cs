@@ -56,5 +56,29 @@ namespace WindowsForms
 			listBoxAlarms.Items.Clear();
 			listBoxAlarms.Items.AddRange(alarms.ToArray());
 		}
+		////////////////////////////////////////////////////////////////////
+		public void CheckAlarms()
+		{
+			Alarm[] alarms = this.alarms.ToArray();
+			for (int i = 0; i < alarms.Length; i++)
+			{
+				if (DateTime.Now.ToString("hh:mm:ss tt") == alarms[i].Time.ToString("hh:mm:ss tt"))
+				{
+					if (alarms[i].WeekDays.Days == 0)
+					{
+						axWindowsMediaPlayer1.Ctlcontrols.stop();
+						axWindowsMediaPlayer1.URL = alarms[i].Filename;
+					}
+					else
+					{
+						if (alarms[i].WeekDays.CheckDay(DateTime.Now.DayOfWeek))
+						{
+							axWindowsMediaPlayer1.Ctlcontrols.stop();
+							axWindowsMediaPlayer1.URL = alarms[i].Filename;
+						}
+					}
+				}
+			}
+		}
 	}
 }

@@ -39,9 +39,10 @@ namespace WindowsForms
 		}
 		void SetDataFormAlarm()
 		{
-			if(Alarm.Date != new DateTime())dateTimePickerDate.Value = Alarm.Date;
+			if (Alarm.Date != new DateTime()) dateTimePickerDate.Value = Alarm.Date;
 			dateTimePickerTime.Value = Alarm.Time;
 			labelFilename.Text = Alarm.ToString();
+			GetDaysFromBitSet(Alarm.WeekDays.Days);
 			axWindowsMediaPlayer1.URL = Alarm.Filename;
 			axWindowsMediaPlayer1.Ctlcontrols.stop();
 		}
@@ -55,6 +56,20 @@ namespace WindowsForms
 			}
 			return days;
 		}
+		public void GetDaysFromBitSet(byte days)
+		{
+			//AllocConsole();
+			for (int i = 0; i < 7; i++)
+			{
+				int day = 1;
+				day <<= i;
+				if ((days & day) != 0)
+				{
+					//Console.WriteLine(checkedListBoxDays.Items[i].ToString());
+					checkedListBoxDays.SetItemCheckState(i, System.Windows.Forms.CheckState.Checked);
+				}
+			}
+		}
 
 		private void buttonChooseFile_Click(object sender, EventArgs e)
 		{
@@ -65,7 +80,7 @@ namespace WindowsForms
 			if (result == DialogResult.OK)
 			{
 				filename = openFileDialog.FileName;
-				if (Alarm == null) Alarm = new Alarm(dateTimePickerTime.Value, filename);
+				if (Alarm == null) Alarm = new Alarm(dateTimePickerTime.Value, filename, checkedListBoxDays);
 				else Alarm.Filename = filename;
 				labelFilename.Text = Alarm.ToString();
 				axWindowsMediaPlayer1.URL = Alarm.Filename;
@@ -91,6 +106,8 @@ namespace WindowsForms
 			//}
 
 			//Console.WriteLine("\n------------------------\n");
+			Alarm.WeekDays.GetBitSet(checkedListBoxDays);
+			labelFilename.Text = Alarm.ToString();
 			labelBitset.Text = $"Bitset:{Convert.ToString(GetBitSet(), 2)}";
 		}
 
@@ -108,6 +125,7 @@ namespace WindowsForms
 
 		private void buttonCancel_Click(object sender, EventArgs e)
 		{
+			//Alarm = null;
 			this.Close();
 		}
 
@@ -146,9 +164,9 @@ CurrentInterval:{current_interval.ToString()}
 						return;
 					}
 				}
+				this.Close();
 			}
 			//buttonAdd.DialogResult = DialogResult.OK;
-			this.Close();
 		}
 	}
 }

@@ -19,6 +19,10 @@ namespace DateTimeComparison
 			Console.WriteLine(interval2);
 			Console.WriteLine(interval1 < interval2);
 			Console.WriteLine(interval1 > interval2);
+			Console.WriteLine("\n---------------------------------\n");
+			Console.WriteLine((int)DateTime.Now.DayOfWeek);
+			DateTime day = new DateTime(2024, 2, 4);
+			Console.WriteLine((int)day.DayOfWeek);
 		}
 	}
 }

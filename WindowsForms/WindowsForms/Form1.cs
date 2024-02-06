@@ -80,6 +80,8 @@ namespace WindowsForms
 				string date = DateTime.Now.ToString("yyyy.MM.dd ddd");
 				label1.Text = $"{label1.Text}\n{date}";
 			}
+			////////////////////////////////////////////////////////
+			alarm.CheckAlarms();
 		}
 
 		private void btnExit_Click(object sender, EventArgs e)
