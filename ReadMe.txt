@@ -2,6 +2,11 @@
 https://www.youtube.com/playlist?list=PLeqyOOqxeiIPKFZv5zcgZrowcucM8n-wi
 
 TODO:
+1. При загрузке файла в 'lableDuration' должна загружаться продолжительность композиции;
+2. При вопроизведении в 'labelProgress' должно отображаться текущее время композиции 
+   и 'horizontalSliderProgress' должен двигаться;
+
+DONE:
 Установить WDK
 https://learn.microsoft.com/en-us/windows-hardware/drivers/download-the-wdk
 
