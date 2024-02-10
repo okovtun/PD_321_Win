@@ -2,6 +2,10 @@
 https://www.youtube.com/playlist?list=PLeqyOOqxeiIPKFZv5zcgZrowcucM8n-wi
 
 TODO:
+Установить WDK
+https://learn.microsoft.com/en-us/windows-hardware/drivers/download-the-wdk
+
+DONE:
 1. Установить QtCreator:	https://drive.google.com/drive/folders/1nJUXS1MzBZzO6m9dcGMua-_poyvrlTMp?usp=sharing
 
 TODO:
