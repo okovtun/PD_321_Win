@@ -1,6 +1,9 @@
 ﻿https://github.com/okovtun/PD_321_Win.git
 https://www.youtube.com/playlist?list=PLeqyOOqxeiIPKFZv5zcgZrowcucM8n-wi
 
+TOREAD:
+https://doc.qt.io/qt-6/signalsandslots.html
+
 TODO:
 1. При загрузке файла в 'lableDuration' должна загружаться продолжительность композиции;    DONE
 2. При вопроизведении в 'labelProgress' должно отображаться текущее время композиции	    DONE
