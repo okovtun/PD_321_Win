@@ -12,12 +12,14 @@
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTableView>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -38,6 +40,7 @@ public:
     QLabel *labelFile;
     QLabel *labelDuration;
     QLabel *labelProgress;
+    QTableView *tableViewPlaylist;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -45,7 +48,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(610, 218);
+        MainWindow->resize(614, 472);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/ico/ico/sound_icon-icons.com_74449.ico"), QSize(), QIcon::Normal, QIcon::Off);
         MainWindow->setWindowIcon(icon);
@@ -53,7 +56,7 @@ public:
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         pushButtonOpen = new QPushButton(centralwidget);
         pushButtonOpen->setObjectName(QString::fromUtf8("pushButtonOpen"));
-        pushButtonOpen->setGeometry(QRect(20, 40, 40, 24));
+        pushButtonOpen->setGeometry(QRect(20, 400, 40, 24));
         pushButtonPrev = new QPushButton(centralwidget);
         pushButtonPrev->setObjectName(QString::fromUtf8("pushButtonPrev"));
         pushButtonPrev->setGeometry(QRect(70, 40, 40, 24));
@@ -90,10 +93,13 @@ public:
         labelProgress = new QLabel(centralwidget);
         labelProgress->setObjectName(QString::fromUtf8("labelProgress"));
         labelProgress->setGeometry(QRect(20, 80, 181, 16));
+        tableViewPlaylist = new QTableView(centralwidget);
+        tableViewPlaylist->setObjectName(QString::fromUtf8("tableViewPlaylist"));
+        tableViewPlaylist->setGeometry(QRect(20, 130, 571, 261));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 610, 20));
+        menubar->setGeometry(QRect(0, 0, 614, 20));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));

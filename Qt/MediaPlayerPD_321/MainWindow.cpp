@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->setupUi(this);
 
 	//				Buttons style:
-	ui->pushButtonOpen->setIcon(style()->standardIcon(QStyle::SP_FileIcon));
+	ui->pushButtonOpen->setIcon(style()->standardIcon(QStyle::SP_DriveDVDIcon));
 	ui->pushButtonPrev->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));
 	ui->pushButtonPlay->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
 	ui->pushButtonPause->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
@@ -27,10 +27,26 @@ MainWindow::MainWindow(QWidget *parent)
 	//				Connect
 	connect(m_player, &QMediaPlayer::durationChanged, this, &MainWindow::on_duration_changed);
 	connect(m_player, &QMediaPlayer::positionChanged, this, &MainWindow::on_position_changed);
+
+	//				Playlist init:
+	m_playlist_model = new QStandardItemModel(this);
+	this->ui->tableViewPlaylist->setModel(m_playlist_model);
+	m_playlist_model->setHorizontalHeaderLabels(QStringList() << "Audio track" << "File path");
+	this->ui->tableViewPlaylist->hideColumn(1);
+	this->ui->tableViewPlaylist->horizontalHeader()->setStretchLastSection(true);
+	this->ui->tableViewPlaylist->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+	m_playlist = new QMediaPlaylist(m_player);
+	m_player->setPlaylist(m_playlist);
+
+	connect(this->ui->pushButtonPrev, &QPushButton::clicked, this->m_playlist, &QMediaPlaylist::previous);
+	connect(this->ui->pushButtonNext, &QPushButton::clicked, this->m_playlist, &QMediaPlaylist::next);
 }
 
 MainWindow::~MainWindow()
 {
+	delete m_playlist_model;
+	delete m_playlist;
 	delete m_player;
 	delete ui;
 }
@@ -52,17 +68,33 @@ void MainWindow::on_position_changed(qint64 position)
 
 void MainWindow::on_pushButtonOpen_clicked()
 {
-	QString file = QFileDialog::getOpenFileName
-			(
-			this,
-			"Open file",
-			NULL,
-			"Audio files (*.mp3 *.flac);; MP-3 (*.mp3);; Flac (*.flac)"
-			);
-	this->ui->labelFile->setText("File: " + file);
-	this->setWindowTitle("MediaPlayerPD_321 - " + file.split('/').last());
-	this->m_player->setMedia(QUrl::fromLocalFile(file));
+//	QString file = QFileDialog::getOpenFileName
+//			(
+//			this,
+//			"Open file",
+//			NULL,
+//			"Audio files (*.mp3 *.flac);; MP-3 (*.mp3);; Flac (*.flac)"
+//			);
+//	this->ui->labelFile->setText("File: " + file);
+//	this->setWindowTitle("MediaPlayerPD_321 - " + file.split('/').last());
+//	this->m_player->setMedia(QUrl::fromLocalFile(file));
 	//this->ui->labelDuration->setText(QString("Duration:").append(QString::number(m_player->duration())));
+
+	QStringList files = QFileDialog::getOpenFileNames
+			(
+				this,
+				"Open file",
+				"D:\\Users\\Clayman\\Music\\Sergo",
+				"Audio files (*.mp3 *.flac);; MP-3 (*.mp3);; Flac (*.flac)"
+			);
+	for(QString filesPath:files)
+	{
+		QList<QStandardItem*> items;
+		items.append(new QStandardItem(QDir(filesPath).dirName()));
+		items.append(new QStandardItem(filesPath));
+		m_playlist_model->appendRow(items);
+		m_playlist->addMedia(QUrl(filesPath));
+	}
 }
 
 void MainWindow::on_horizontalSliderVolume_valueChanged(int value)
