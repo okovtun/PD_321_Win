@@ -5,6 +5,7 @@ TODO:
 1. При загрузке файла в 'lableDuration' должна загружаться продолжительность композиции;    DONE
 2. При вопроизведении в 'labelProgress' должно отображаться текущее время композиции	    DONE
    и 'horizontalSliderProgress' должен двигаться;
+3. Возле 'horizontalSliderVolume' добавить кнопку 'Mute';
 
 DONE:
 Установить WDK

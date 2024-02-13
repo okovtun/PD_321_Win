@@ -86,7 +86,7 @@ public:
         labelFile->setGeometry(QRect(20, 10, 581, 16));
         labelDuration = new QLabel(centralwidget);
         labelDuration->setObjectName(QString::fromUtf8("labelDuration"));
-        labelDuration->setGeometry(QRect(516, 79, 71, 21));
+        labelDuration->setGeometry(QRect(496, 79, 91, 21));
         labelProgress = new QLabel(centralwidget);
         labelProgress->setObjectName(QString::fromUtf8("labelProgress"));
         labelProgress->setGeometry(QRect(20, 80, 181, 16));
