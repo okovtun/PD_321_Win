@@ -12,6 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
@@ -41,6 +42,9 @@ public:
     QLabel *labelDuration;
     QLabel *labelProgress;
     QTableView *tableViewPlaylist;
+    QPushButton *pushButtonMute;
+    QCheckBox *checkBoxLoop;
+    QCheckBox *checkBoxShuffle;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -96,6 +100,16 @@ public:
         tableViewPlaylist = new QTableView(centralwidget);
         tableViewPlaylist->setObjectName(QString::fromUtf8("tableViewPlaylist"));
         tableViewPlaylist->setGeometry(QRect(20, 130, 571, 261));
+        pushButtonMute = new QPushButton(centralwidget);
+        pushButtonMute->setObjectName(QString::fromUtf8("pushButtonMute"));
+        pushButtonMute->setGeometry(QRect(370, 40, 40, 24));
+        pushButtonMute->setCheckable(true);
+        checkBoxLoop = new QCheckBox(centralwidget);
+        checkBoxLoop->setObjectName(QString::fromUtf8("checkBoxLoop"));
+        checkBoxLoop->setGeometry(QRect(450, 400, 72, 19));
+        checkBoxShuffle = new QCheckBox(centralwidget);
+        checkBoxShuffle->setObjectName(QString::fromUtf8("checkBoxShuffle"));
+        checkBoxShuffle->setGeometry(QRect(520, 400, 72, 19));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -123,6 +137,9 @@ public:
         labelFile->setText(QCoreApplication::translate("MainWindow", "File:", nullptr));
         labelDuration->setText(QCoreApplication::translate("MainWindow", "Duration:", nullptr));
         labelProgress->setText(QCoreApplication::translate("MainWindow", "Progress:", nullptr));
+        pushButtonMute->setText(QString());
+        checkBoxLoop->setText(QCoreApplication::translate("MainWindow", "Loop", nullptr));
+        checkBoxShuffle->setText(QCoreApplication::translate("MainWindow", "Shuffle", nullptr));
     } // retranslateUi
 
 };

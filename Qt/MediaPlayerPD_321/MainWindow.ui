@@ -187,6 +187,48 @@
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButtonMute">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>40</y>
+      <width>40</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkBoxLoop">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>400</y>
+      <width>72</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Loop</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkBoxShuffle">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>400</y>
+      <width>72</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Shuffle</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

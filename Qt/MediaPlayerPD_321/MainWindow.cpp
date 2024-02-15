@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->pushButtonPause->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
 	ui->pushButtonStop->setIcon(style()->standardIcon(QStyle::SP_MediaStop));
 	ui->pushButtonNext->setIcon(style()->standardIcon(QStyle::SP_MediaSkipForward));
+	this->ui->pushButtonMute->setIcon(style()->standardIcon(QStyle::SP_MediaVolume));
 
 	//				Player init:
 	m_player = new QMediaPlayer(this);
@@ -41,14 +42,51 @@ MainWindow::MainWindow(QWidget *parent)
 
 	connect(this->ui->pushButtonPrev, &QPushButton::clicked, this->m_playlist, &QMediaPlaylist::previous);
 	connect(this->ui->pushButtonNext, &QPushButton::clicked, this->m_playlist, &QMediaPlaylist::next);
+	connect(this->m_playlist, &QMediaPlaylist::currentIndexChanged, this->ui->tableViewPlaylist, &QTableView::selectRow);
+	connect(this->ui->tableViewPlaylist, &QTableView::doubleClicked,
+			[this](const QModelIndex& index){m_playlist->setCurrentIndex(index.row());this->m_player->play();});
+
+	QString filename = DEFAULT_PLAYLIST_LOCATION + "playlist.m3u";
+	loadPlaylist(filename);
 }
 
 MainWindow::~MainWindow()
 {
+	QString filename = DEFAULT_PLAYLIST_LOCATION + "playlist.m3u";
+	//savePlaylist(filename);
 	delete m_playlist_model;
 	delete m_playlist;
 	delete m_player;
 	delete ui;
+}
+
+void MainWindow::setPlaybackMode()
+{
+	QMediaPlaylist::PlaybackMode mode = QMediaPlaylist::PlaybackMode::CurrentItemOnce;
+	if(this->ui->checkBoxLoop->isChecked())mode = QMediaPlaylist::PlaybackMode::Loop;
+	if(this->ui->checkBoxShuffle->isChecked())mode = QMediaPlaylist::PlaybackMode::Random;
+	this->m_playlist->setPlaybackMode(mode);
+}
+
+void MainWindow::savePlaylist(QString filename)
+{
+	QString format = filename.split('.').last();
+	QUrl url = QUrl::fromLocalFile(filename);
+	bool result = m_playlist->save(url, format.toStdString().c_str());
+}
+
+void MainWindow::loadPlaylist(QString filename)
+{
+	QString format = filename.split('.').last();
+	m_playlist->load(QUrl::fromLocalFile(filename), format.toStdString().c_str());
+	for(int i=0; i<m_playlist->mediaCount(); i++)
+	{
+		QString url = m_playlist->media(i).canonicalUrl().url();
+		QList<QStandardItem*> items;
+		items.append(new QStandardItem(QDir(url).dirName()));
+		items.append(new QStandardItem(url));
+		m_playlist_model->appendRow(items);
+	}
 }
 
 void MainWindow::on_duration_changed(qint64 duration)
@@ -117,4 +155,23 @@ void MainWindow::on_pushButtonPause_clicked()
 void MainWindow::on_horizontalSliderProgress_sliderMoved(int position)
 {
 	this->m_player->setPosition(position);
+}
+
+void MainWindow::on_pushButtonMute_clicked()
+{
+	this->m_player->setMuted(this->ui->pushButtonMute->isChecked());
+	this->ui->pushButtonMute->setIcon(style()->standardIcon(
+										  this->ui->pushButtonMute->isChecked()?
+											QStyle::SP_MediaVolumeMuted:
+											  QStyle::SP_MediaVolume));
+}
+
+void MainWindow::on_checkBoxLoop_stateChanged(int arg1)
+{
+	this->setPlaybackMode();
+}
+
+void MainWindow::on_checkBoxShuffle_stateChanged(int arg1)
+{
+	this->setPlaybackMode();
 }
