@@ -21,6 +21,9 @@ public:
 	void setPlaybackMode();
 	void savePlaylist(QString filename);
 	void loadPlaylist(QString filename);
+	void loadFileToPlylist(QString filename);
+	void setTitles();
+	QVector<QString> loadPlaylistToArray(QString filename);
 
 private slots:
 	void on_duration_changed(qint64 duration);

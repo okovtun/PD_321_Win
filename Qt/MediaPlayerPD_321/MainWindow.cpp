@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QStyle>
 #include <QTime>
+#include <QMultimedia>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -32,10 +33,14 @@ MainWindow::MainWindow(QWidget *parent)
 	//				Playlist init:
 	m_playlist_model = new QStandardItemModel(this);
 	this->ui->tableViewPlaylist->setModel(m_playlist_model);
-	m_playlist_model->setHorizontalHeaderLabels(QStringList() << "Audio track" << "File path");
+	m_playlist_model->setHorizontalHeaderLabels(QStringList() << "Audio track" << "File path" << "Duration");
 	this->ui->tableViewPlaylist->hideColumn(1);
-	this->ui->tableViewPlaylist->horizontalHeader()->setStretchLastSection(true);
+	//this->ui->tableViewPlaylist->horizontalHeader()->setStretchLastSection(true);
+	int c_duration_width = 64;
+	this->ui->tableViewPlaylist->setColumnWidth(2, c_duration_width);
+	this->ui->tableViewPlaylist->setColumnWidth(0, this->ui->tableViewPlaylist->width()-c_duration_width*1.7);
 	this->ui->tableViewPlaylist->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	this->ui->tableViewPlaylist->setSelectionBehavior(QAbstractItemView::SelectRows);
 
 	m_playlist = new QMediaPlaylist(m_player);
 	m_player->setPlaylist(m_playlist);
@@ -44,7 +49,9 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(this->ui->pushButtonNext, &QPushButton::clicked, this->m_playlist, &QMediaPlaylist::next);
 	connect(this->m_playlist, &QMediaPlaylist::currentIndexChanged, this->ui->tableViewPlaylist, &QTableView::selectRow);
 	connect(this->ui->tableViewPlaylist, &QTableView::doubleClicked,
-			[this](const QModelIndex& index){m_playlist->setCurrentIndex(index.row());this->m_player->play();});
+			[this](const QModelIndex& index){m_playlist->setCurrentIndex(index.row());/*this->m_player->play();*/});
+	connect(this->m_playlist, &QMediaPlaylist::currentIndexChanged,
+			[this](int position){setTitles(); m_player->play();});
 
 	QString filename = DEFAULT_PLAYLIST_LOCATION + "playlist.m3u";
 	loadPlaylist(filename);
@@ -77,16 +84,68 @@ void MainWindow::savePlaylist(QString filename)
 
 void MainWindow::loadPlaylist(QString filename)
 {
-	QString format = filename.split('.').last();
-	m_playlist->load(QUrl::fromLocalFile(filename), format.toStdString().c_str());
-	for(int i=0; i<m_playlist->mediaCount(); i++)
+//	QString format = filename.split('.').last();
+//	m_playlist->load(QUrl::fromLocalFile(filename), format.toStdString().c_str());
+//	for(int i=0; i<m_playlist->mediaCount(); i++)
+//	{
+//		QString url = m_playlist->media(i).canonicalUrl().url();
+//		QList<QStandardItem*> items;
+//		items.append(new QStandardItem(QDir(url).dirName()));
+//		items.append(new QStandardItem(url));
+//		m_playlist_model->appendRow(items);
+//	}
+
+	QVector<QString> lines = loadPlaylistToArray(filename);
+	for(int i=0; i<lines.size(); i++)
 	{
-		QString url = m_playlist->media(i).canonicalUrl().url();
-		QList<QStandardItem*> items;
-		items.append(new QStandardItem(QDir(url).dirName()));
-		items.append(new QStandardItem(url));
-		m_playlist_model->appendRow(items);
+		loadFileToPlylist(lines[i]);
 	}
+}
+
+void MainWindow::loadFileToPlylist(QString filename)
+{
+	filename = filename.remove('\n');
+
+	/////////////
+
+	QMediaPlayer player;
+	QString duration;// = QTime::fromMSecsSinceStartOfDay(player.duration()).toString("hh:mm:ss");
+	connect(&player, &QMediaPlayer::durationChanged,
+			[&player, &duration]
+	{
+		duration = QTime::fromMSecsSinceStartOfDay(player.duration()).toString("hh:mm:ss");
+	});
+	player.setMedia(QUrl(filename));
+	//player.media().resources();
+	/////////////
+
+	QList<QStandardItem*> items;
+	items.append(new QStandardItem(QDir(filename).dirName()));
+	items.append(new QStandardItem(filename));
+	items.append(new QStandardItem(duration));
+	m_playlist_model->appendRow(items);
+	m_playlist->addMedia(QUrl(filename));
+
+}
+
+void MainWindow::setTitles()
+{
+	QString title = m_playlist->currentMedia().canonicalUrl().toString();
+	this->setWindowTitle(title.split('/').last());
+	this->ui->labelFile->setText(title);
+}
+
+QVector<QString> MainWindow::loadPlaylistToArray(QString filename)
+{
+	QFile file(filename);
+	file.open(QIODevice::ReadOnly);
+	QList<QString> lines;
+	while(!file.atEnd())
+	{
+		QByteArray line = file.readLine();
+		lines.append(line);
+	}
+	return lines.toVector();
 }
 
 void MainWindow::on_duration_changed(qint64 duration)
@@ -123,15 +182,16 @@ void MainWindow::on_pushButtonOpen_clicked()
 				this,
 				"Open file",
 				"D:\\Users\\Clayman\\Music\\Sergo",
-				"Audio files (*.mp3 *.flac);; MP-3 (*.mp3);; Flac (*.flac)"
+				"Audio files (*.mp3 *.flac);; MP-3 (*.mp3);; Flac (*.flac);; Playlists (*.m3u *.CUE)"
 			);
 	for(QString filesPath:files)
 	{
-		QList<QStandardItem*> items;
-		items.append(new QStandardItem(QDir(filesPath).dirName()));
-		items.append(new QStandardItem(filesPath));
-		m_playlist_model->appendRow(items);
-		m_playlist->addMedia(QUrl(filesPath));
+//		QList<QStandardItem*> items;
+//		items.append(new QStandardItem(QDir(filesPath).dirName()));
+//		items.append(new QStandardItem(filesPath));
+//		m_playlist_model->appendRow(items);
+//		m_playlist->addMedia(QUrl(filesPath));
+		this->loadFileToPlylist(filesPath);
 	}
 }
 
