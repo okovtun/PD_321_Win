@@ -47,7 +47,6 @@ private slots:
 private:
 	Ui::MainWindow *ui;
 	QMediaPlayer* m_player;
-
 	QMediaPlaylist* m_playlist;
 	QStandardItemModel* m_playlist_model;
 

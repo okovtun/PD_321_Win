@@ -4,6 +4,10 @@
 #include <QStyle>
 #include <QTime>
 #include <QMultimedia>
+#include <QMediaMetaData>
+#include <QMediaTimeInterval>
+#include <QMediaTimeRange>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -106,26 +110,13 @@ void MainWindow::loadFileToPlylist(QString filename)
 {
 	filename = filename.remove('\n');
 
-	/////////////
-
-	QMediaPlayer player;
-	QString duration;// = QTime::fromMSecsSinceStartOfDay(player.duration()).toString("hh:mm:ss");
-	connect(&player, &QMediaPlayer::durationChanged,
-			[&player, &duration]
-	{
-		duration = QTime::fromMSecsSinceStartOfDay(player.duration()).toString("hh:mm:ss");
-	});
-	player.setMedia(QUrl(filename));
-	//player.media().resources();
-	/////////////
-
+	m_playlist->addMedia(QUrl(filename));
 	QList<QStandardItem*> items;
 	items.append(new QStandardItem(QDir(filename).dirName()));
 	items.append(new QStandardItem(filename));
-	items.append(new QStandardItem(duration));
 	m_playlist_model->appendRow(items);
-	m_playlist->addMedia(QUrl(filename));
 
+//	delete player;
 }
 
 void MainWindow::setTitles()
@@ -153,6 +144,12 @@ void MainWindow::on_duration_changed(qint64 duration)
 	this->ui->horizontalSliderProgress->setMaximum(duration);
 	QTime q_time = QTime::fromMSecsSinceStartOfDay(duration);
 	ui->labelDuration->setText(QString("Duration").append(q_time.toString("hh:mm:ss")));
+
+	QVariant data = m_player->metaData(QMediaMetaData::AudioBitRate);
+	//ui->labelBitrate->setText("bitrate: " + QString::number(m_player->metaData(QMediaMetaData::AudioBitRate).toString().toDouble()/1000).append(" kbps"));
+	ui->labelBitrate->setText("bitrate: " + QString::number(m_player->metaData(QMediaMetaData::AudioBitRate).toString().toDouble()/1000).append(" kbps"));
+	data = m_player->metaData(QMediaMetaData::SampleRate);
+	ui->labelSampleRate->setText("sample rate: " + QString::number(data.toDouble()/1000) + " khz");
 }
 
 void MainWindow::on_position_changed(qint64 position)

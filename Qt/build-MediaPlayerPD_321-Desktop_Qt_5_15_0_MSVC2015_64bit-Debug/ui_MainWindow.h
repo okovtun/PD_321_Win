@@ -45,6 +45,8 @@ public:
     QPushButton *pushButtonMute;
     QCheckBox *checkBoxLoop;
     QCheckBox *checkBoxShuffle;
+    QLabel *labelBitrate;
+    QLabel *labelSampleRate;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -110,6 +112,12 @@ public:
         checkBoxShuffle = new QCheckBox(centralwidget);
         checkBoxShuffle->setObjectName(QString::fromUtf8("checkBoxShuffle"));
         checkBoxShuffle->setGeometry(QRect(520, 400, 72, 19));
+        labelBitrate = new QLabel(centralwidget);
+        labelBitrate->setObjectName(QString::fromUtf8("labelBitrate"));
+        labelBitrate->setGeometry(QRect(140, 80, 121, 16));
+        labelSampleRate = new QLabel(centralwidget);
+        labelSampleRate->setObjectName(QString::fromUtf8("labelSampleRate"));
+        labelSampleRate->setGeometry(QRect(310, 80, 151, 16));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -140,6 +148,8 @@ public:
         pushButtonMute->setText(QString());
         checkBoxLoop->setText(QCoreApplication::translate("MainWindow", "Loop", nullptr));
         checkBoxShuffle->setText(QCoreApplication::translate("MainWindow", "Shuffle", nullptr));
+        labelBitrate->setText(QCoreApplication::translate("MainWindow", "bitrate:", nullptr));
+        labelSampleRate->setText(QCoreApplication::translate("MainWindow", "Sample rate:", nullptr));
     } // retranslateUi
 
 };
