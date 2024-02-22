@@ -232,3 +232,20 @@ void MainWindow::on_checkBoxShuffle_stateChanged(int arg1)
 {
 	this->setPlaybackMode();
 }
+
+void MainWindow::on_pushButtonClr_clicked()
+{
+	m_playlist->clear();
+	m_playlist_model->clear();
+}
+
+void MainWindow::on_pushButtonDel_clicked()
+{
+	QItemSelectionModel* selection = ui->tableViewPlaylist->selectionModel();
+	QModelIndexList indexes = selection->selectedRows();
+	for(QModelIndex i:indexes)
+	{
+		m_playlist_model->removeRows(i.row(),1);
+		m_playlist->removeMedia(i.row());
+	}
+}

@@ -44,6 +44,10 @@ private slots:
 
 	void on_checkBoxShuffle_stateChanged(int arg1);
 
+	void on_pushButtonClr_clicked();
+
+	void on_pushButtonDel_clicked();
+
 private:
 	Ui::MainWindow *ui;
 	QMediaPlayer* m_player;
